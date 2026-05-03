@@ -939,7 +939,7 @@
                 Aprenda IA em 3 níveis progressivos! 🚀
             </p>
             <div class="player-count">
-                🌟 <span id="totalPlayers">0</span> jogadores mundialmente
+                🌟 +500 educadores já desafiados!
             </div>
             <div style="margin: 30px 0; font-size: clamp(14px, 3vw, 18px);">
                 <p style="color: #00ff00; font-weight: bold; margin: 10px 0;">🟢 Nível 1: Fundação (Literacy)</p>
@@ -958,7 +958,7 @@
                     <div class="level-icon">🟢</div>
                     <div class="level-title">Nível 1: Fundação</div>
                     <div class="level-description">
-                        Entenda o básico: O que é IA? GenAI vs Predictive AI. Neural Networks e conceitos fundamentais.
+                        Entenda o básico: O que é IA? GenAI vs Predictive AI. Neural Networks, Algoritmos e IA Multimodal (Claude, Gemini, GPT-4o).
                     </div>
                     <div class="level-stats">
                         <div class="level-stat">
@@ -982,7 +982,7 @@
                     <div class="level-icon">🟡</div>
                     <div class="level-title">Nível 2: Competência</div>
                     <div class="level-description">
-                        Aprenda a interagir: Prompt Science, Hallucination, Tokens, RAG e Context Window.
+                        Aprenda a interagir: Prompt Science, Hallucination, Tokens, RAG, Context Window e AI Agents.
                     </div>
                     <div class="level-stats">
                         <div class="level-stat">
@@ -1006,7 +1006,7 @@
                     <div class="level-icon">🔴</div>
                     <div class="level-title">Nível 3: Maestria</div>
                     <div class="level-description">
-                        Domine a ciência: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem.
+                        Domine a ciência: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem e Reasoning Models (Claude Opus 4, Gemini 2.5 Pro).
                     </div>
                     <div class="level-stats">
                         <div class="level-stat">
@@ -1052,7 +1052,7 @@
                 <div class="video-placeholder" id="videoPlaceholder">
                     🎬 <span id="videoTopic"></span>
                     <br><br>
-                    <small style="color: #FF00FF;">📺 Substitua com vídeos do Gemini V3</small>
+                    <small style="color: #FF00FF;">📺 Adicione seus vídeos do HeyGen aqui</small>
                 </div>
                 <button class="skip-video" onclick="skipVideo()">⏭️ Pular vídeo</button>
             </div>
@@ -1146,15 +1146,15 @@
                 {
                     videoTopic: "Large Language Models",
                     videoUrl: "level1-video3.mp4",
-                    question: "O que um LLM (Large Language Model) realmente modela?",
+                    question: "O que os modelos de IA modernos como Claude Opus 4 e Gemini 2.5 Pro processam?",
                     options: [
                         { text: "A verdade absoluta", emoji: "✅", correct: false },
-                        { text: "A probabilidade da linguagem", emoji: "🎲", correct: true },
+                        { text: "Texto, imagens, áudio e código — são multimodais", emoji: "🎲", correct: true },
                         { text: "Emoções humanas", emoji: "❤️", correct: false },
                         { text: "Regras gramaticais fixas", emoji: "📖", correct: false }
                     ],
-                    explanation: "✅ EXCELENTE! LLMs modelam probabilidades de sequências linguísticas, não verdade!",
-                    wrongExplanation: "❌ LLMs são probabilísticos, não determinísticos!"
+                    explanation: "✅ EXCELENTE! Modelos modernos como Claude Opus 4, Gemini 2.5 Pro e GPT-4o são multimodais — processam texto, imagens, áudio e código na mesma conversa!",
+                    wrongExplanation: "❌ Modelos modernos vão muito além do texto — são multimodais!"
                 },
                 {
                     videoTopic: "Redes Neurais",
@@ -1183,7 +1183,20 @@
                     wrongExplanation: "❌ Pense na 'receita' de processamento!"
                 }
             ],
-            2: [ // 🟡 COMPETENCY (Skills)
+                    {
+                videoTopic: "IA Multimodal",
+                videoUrl: "seus-videos-heygen.mp4",
+                question: "O que é IA Multimodal em 2026?",
+                options: [
+                    { text: "IA que processa texto, imagens, áudio e vídeo juntos", emoji: "🎭", correct: true },
+                    { text: "IA que fala múltiplos idiomas", emoji: "🌐", correct: false },
+                    { text: "IA com múltiplos usuários simultâneos", emoji: "👥", correct: false },
+                    { text: "IA instalada em múltiplos dispositivos", emoji: "📱", correct: false }
+                ],
+                explanation: "✅ CORRETO! IA Multimodal combina modalidades numa só conversa. Claude Opus 4, Gemini 2.5 Pro e GPT-4o analisam imagens, transcrevem áudio e geram código no mesmo chat!",
+                wrongExplanation: "❌ Multimodal = múltiplas modalidades de dados (texto + imagem + áudio + vídeo)!"
+            },
+        2: [ // 🟡 COMPETENCY (Skills)
                 {
                     videoTopic: "Ciência de Prompts",
                     videoUrl: "level2-video1.mp4",
@@ -1250,7 +1263,20 @@
                     wrongExplanation: "❌ RAG ancora a IA em fontes reais!"
                 }
             ],
-            3: [ // 🔴 MASTERY (Science & Pedagogy)
+                    {
+                videoTopic: "Agentes de IA",
+                videoUrl: "seus-videos-heygen.mp4",
+                question: "O que é um Agente de IA (AI Agent) em 2026?",
+                options: [
+                    { text: "IA que age autonomamente: planeja, usa ferramentas e executa tarefas", emoji: "🤖", correct: true },
+                    { text: "Um chatbot de atendimento ao cliente", emoji: "💬", correct: false },
+                    { text: "Um robô físico controlado por IA", emoji: "🦾", correct: false },
+                    { text: "Um modelo de IA sem interface", emoji: "⚙️", correct: false }
+                ],
+                explanation: "✅ PERFEITO! AI Agents são sistemas autônomos que percebem o ambiente, planejam ações e usam ferramentas (via MCP) para executar tarefas complexas. Claude Code, o agente que criou este jogo, é um exemplo real!",
+                wrongExplanation: "❌ Agentes de IA vão além do chat — agem, planejam e executam de forma autônoma!"
+            },
+        3: [ // 🔴 MASTERY (Science & Pedagogy)
                 {
                     videoTopic: "Chain of Thought (CoT)",
                     videoUrl: "level3-video1.mp4",
@@ -1270,11 +1296,11 @@
                     question: "O que Temperature controla?",
                     options: [
                         { text: "Temperatura do processador", emoji: "🌡️", correct: false },
-                        { text: "Randomness: Baixo=Factual, Alto=Criativo", emoji: "🎲", correct: true },
+                        { text: "Aleatoriedade: Baixo=Preciso/Factual, Alto=Criativo/Variado", emoji: "🎲", correct: true },
                         { text: "Velocidade de resposta", emoji: "⚡", correct: false },
                         { text: "Tamanho da resposta", emoji: "📏", correct: false }
                     ],
-                    explanation: "✅ EXCELENTE! Temperature 0.2=determinístico, 0.8=criativo. É o 'controle de criatividade'!",
+                    explanation: "✅ EXCELENTE! Temperature controla aleatoriedade. 0.0-0.3 = factual e consistente (ex: Claude Opus 4 em análise). 0.7-1.0 = criativo e variado (ex: Gemini 2.5 em brainstorm)!",
                     wrongExplanation: "❌ Temperature controla aleatoriedade, não calor!"
                 },
                 {
@@ -1315,7 +1341,20 @@
                     ],
                     explanation: "✅ EXCELENTE! Workflow: Orientação humana (pão) + Processamento IA (recheio) + Validação humana (pão)!",
                     wrongExplanation: "❌ É um workflow de colaboração humano-IA!"
-                }
+                },
+        {
+                videoTopic: "Modelos de Raciocínio (Thinking Models)",
+                videoUrl: "seus-videos-heygen.mp4",
+                question: "O que são Modelos de Raciocínio como Claude Opus 4 e Gemini 2.5 Pro?",
+                options: [
+                    { text: "Modelos que processam etapas internas antes de responder (extended thinking)", emoji: "🧠", correct: true },
+                    { text: "Modelos treinados apenas em textos científicos", emoji: "🔬", correct: false },
+                    { text: "Modelos que respondem mais rápido que os anteriores", emoji: "⚡", correct: false },
+                    { text: "Modelos com maior número de parâmetros visíveis", emoji: "📊", correct: false }
+                ],
+                explanation: "✅ EXCELENTE! Reasoning Models (Claude Opus 4 Extended Thinking, Gemini 2.5 Pro Deep Think, OpenAI o3) processam 'thinking tokens' internos antes da resposta final — como um rascunho mental. Aumentam dramaticamente a precisão em problemas complexos!",
+                wrongExplanation: "❌ Reasoning models usam raciocínio interno (extended thinking) antes de responder!"
+            }
             ]
         };
 
@@ -1460,7 +1499,7 @@
             const q = questions[currentQuestion];
             videoWatched = false;
 
-            document.getElementById('questionNumber').textContent = `Pergunta ${currentQuestion + 1} de 5`;
+            document.getElementById('questionNumber').textContent = `Pergunta ${currentQuestion + 1} de ${levels[currentLevel].length}`;
             document.getElementById('questionText').textContent = q.question;
             document.getElementById('videoTopic').textContent = q.videoTopic;
             document.getElementById('feedbackBox').classList.remove('active');
@@ -1607,7 +1646,7 @@
             document.getElementById('finalScore').textContent = score;
             document.getElementById('finalStreak').textContent = maxStreak;
             document.getElementById('finalTime').textContent = finalTime + 's';
-            document.getElementById('correctAnswers').textContent = correctCount + '/5';
+            document.getElementById('correctAnswers').textContent = correctCount + '/' + levels[currentLevel].length;
 
             const levelPlayers = (window.allPlayers || []).filter(p => p.level === currentLevel);
             const rank = levelPlayers.filter(p => p.score > score).length + 1;
@@ -1761,5 +1800,25 @@
 
         init();
     </script>
+    <!-- ==========================================
+         MODELOS DE IA UTILIZADOS NESTE PROJETO
+         ==========================================
+         Este jogo foi criado com assistência de:
+         • Claude Opus 4.5 (Anthropic) — via Claude Code
+           Geração do código HTML/CSS/JS, lógica do quiz,
+           design responsivo e toda a estrutura do jogo.
+         • Claude Code (Anthropic) — Agente de IA agentico
+           que executou as sessões de desenvolvimento,
+           criou os arquivos e fez os commits no GitHub.
+         
+         Conceitos de IA abordados no jogo referem-se a:
+         • Claude Opus 4 / Claude Sonnet 4.x (Anthropic)
+         • Gemini 2.5 Pro / Flash (Google DeepMind)
+         • GPT-4o / o1 / o3 (OpenAI)
+         • Model Context Protocol (MCP) — Anthropic/Open
+         
+         Publicado via GitHub Pages.
+         © 2026 DR.DE.SOUZ.AI — DrDeSouzAI
+         ========================================== -->
 </body>
 </html>
