@@ -1403,11 +1403,8 @@
 
         async function init() {
             // Show API notice if leaderboard backend (Cloudflare Workers KV) is not connected
-            if (typeof window.storage === 'undefined' || window.storage === null) {
-                const notice = document.getElementById('apiNotice');
-                if (notice) notice.classList.add('visible');
-            }
-            await loadLeaderboard();
+            // API notice is shown/hidden by loadLeaderboard() based on Worker availability
+                        await loadLeaderboard();
             updatePlayerCount();
             loadProgress();
         }
@@ -1445,24 +1442,17 @@
         }
 
         async function loadLeaderboard() {
+            const WORKER_URL = 'https://ai-literacy-leaderboard.mrdesouzaphd.workers.dev';
             try {
-                const keys = await window.storage.list('player:level', true);
-                const players = [];
-
-                if (keys && keys.keys) {
-                    for (const key of keys.keys) {
-                        const data = await window.storage.get(key, true);
-                        if (data && data.value) {
-                            players.push(JSON.parse(data.value));
-                        }
-                    }
-                }
-
-                players.sort((a, b) => b.score - a.score);
-                window.allPlayers = players;
-            } catch (error) {
-                console.log('Leaderboard loading...');
-                window.allPlayers = [];
+                const resp = await fetch(WORKER_URL + '/leaderboard');
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const scores = await resp.json();
+                displayLeaderboard(scores);
+                document.getElementById('apiNotice').classList.remove('visible');
+            } catch (e) {
+                console.warn('Leaderboard API unavailable:', e.message);
+                displayLeaderboard([]);
+                document.getElementById('apiNotice').classList.add('visible');
             }
         }
 
@@ -1671,10 +1661,16 @@
             };
 
             try {
-                await window.storage.set(`player:level${currentLevel}:${Date.now()}-${playerName}`, JSON.stringify(playerData), true);
+                const WORKER_URL = 'https://ai-literacy-leaderboard.mrdesouzaphd.workers.dev';
+                await fetch(WORKER_URL + '/score', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: playerName, score: playerData.score, level: currentLevel })
+                });
                 await loadLeaderboard();
             } catch (error) {
-                console.error('Leaderboard save error:', error);
+                console.warn('Leaderboard save error:', error);
+                await loadLeaderboard();
             }
 
             document.getElementById('finalScore').textContent = score;
