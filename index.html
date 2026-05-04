@@ -921,12 +921,41 @@
                 grid-template-columns: 1fr;
             }
         }
+    
+        /* API Notice Banner */
+        .api-notice {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.25), rgba(255, 69, 0, 0.25));
+            border: 2px solid #FFA500;
+            border-radius: 15px;
+            padding: 14px 20px;
+            margin-bottom: 18px;
+            font-size: clamp(13px, 2.5vw, 15px);
+            color: #FFD700;
+            text-align: center;
+            display: none;
+        }
+        .api-notice.visible { display: block; }
+        .api-notice a { color: #00D9FF; text-decoration: underline; }
+        .api-notice strong { color: #FFA500; }
+
     </style>
 </head>
 <body>
     <canvas id="confettiCanvas"></canvas>
 
     <div class="container">
+        <!-- API Notice: shown when leaderboard backend is not connected -->
+        <div class="api-notice" id="apiNotice">
+            ⚠️ <strong>Modo offline:</strong> O placar global requer uma API Cloudflare Workers KV.
+            O jogo funciona normalmente, mas as pontuações não serão salvas no ranking mundial.
+            <br>📖 <a href="https://github.com/mrdesouzaphd-cmyk/claude-code/blob/update-game-2026/examples/ai-literacy-challenge/README.md" target="_blank">Ver instruções de configuração da API</a>
+        </div>
+        <!-- API Notice: shown when leaderboard backend is not connected -->
+        <div class="api-notice" id="apiNotice">
+            ⚠️ <strong>Modo offline:</strong> O placar global requer uma API Cloudflare Workers KV.
+            O jogo funciona normalmente, mas as pontuações não serão salvas no ranking mundial.
+            <br><a href="https://github.com/mrdesouzaphd-cmyk/claude-code#leaderboard-api" target="_blank">📖 Ver instruções de configuração</a>
+        </div>
         <div class="header">
             <div class="logo-text">DR.DE.SOUZ.AI</div>
             <div class="subtitle">🎓 AI Literacy Challenge</div>
@@ -1373,6 +1402,11 @@
         let levelsCompleted = {1: false, 2: false, 3: false};
 
         async function init() {
+            // Show API notice if leaderboard backend (Cloudflare Workers KV) is not connected
+            if (typeof window.storage === 'undefined' || window.storage === null) {
+                const notice = document.getElementById('apiNotice');
+                if (notice) notice.classList.add('visible');
+            }
             await loadLeaderboard();
             updatePlayerCount();
             loadProgress();
