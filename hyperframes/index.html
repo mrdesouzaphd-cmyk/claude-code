@@ -3,49 +3,777 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="assets/gsap.min.js"></script>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px;
         overflow: hidden;
-        background: #000;
+        background: #1e1e2e;
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        color: #e6e6f0;
       }
+
+      #root { position: relative; width: 1920px; height: 1080px; background: #1e1e2e; }
+      #root::before {
+        content: ""; position: absolute; inset: 0;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+        pointer-events: none; z-index: 1;
+      }
+
+      .word-window {
+        position: absolute;
+        top: 60px; left: 80px;
+        width: 1340px; height: 820px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+        overflow: hidden;
+        z-index: 2;
+      }
+      .titlebar {
+        height: 36px; background: #f3f3f3;
+        display: flex; align-items: center; padding: 0 16px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .traffic { display: flex; gap: 8px; }
+      .traffic span { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+      .traffic .r { background: #ff5f57; }
+      .traffic .y { background: #ffbd2e; }
+      .traffic .g { background: #28ca42; }
+      .doc-title { margin-left: 24px; font-size: 13px; color: #444; font-weight: 500; }
+
+      .ribbon { height: 110px; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; position: relative; }
+      .ribbon-tabs {
+        display: flex; gap: 0; height: 32px;
+        background: #f3f3f3; border-bottom: 1px solid #e0e0e0;
+        padding-left: 12px;
+      }
+      .ribbon-tab {
+        padding: 7px 18px; font-size: 12px; color: #555;
+        border-bottom: 2px solid transparent;
+      }
+      .ribbon-tab.active { color: #0078D4; border-bottom-color: #0078D4; background: #fff; }
+      .ribbon-body { display: flex; align-items: center; padding: 12px 18px; gap: 14px; height: 78px; }
+
+      .styles-gallery {
+        display: flex; gap: 6px; align-items: center;
+        background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
+        padding: 4px 6px;
+      }
+      .style-btn {
+        width: 92px; height: 50px; border-right: 1px solid #ececec;
+        display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+        padding: 4px 8px; font-size: 11px; color: #444;
+        position: relative; background: #fff;
+      }
+      .style-btn:last-child { border-right: none; }
+      .style-btn .preview { font-weight: 700; font-size: 12px; }
+      .style-btn .name { font-size: 10px; color: #666; margin-top: 2px; }
+      .style-btn.normal .preview { font-weight: 400; color: #222; }
+      .style-btn.title .preview { font-size: 14px; color: #1a1a1a; }
+      .style-btn.h1 .preview { color: #0078D4; font-size: 13px; }
+      .style-btn.h2 .preview { color: #2b88d8; font-size: 12px; }
+      .style-btn.h3 .preview { color: #4a9bdc; font-size: 11px; }
+      .style-btn.highlight {
+        outline: 3px solid #0078D4; outline-offset: -1px; background: #eaf3fb;
+      }
+      .style-btn .glow {
+        position: absolute; inset: -4px; border-radius: 8px;
+        box-shadow: 0 0 24px 6px rgba(0,120,212,0.65);
+        opacity: 0; pointer-events: none;
+      }
+
+      .ribbon-group {
+        font-size: 10px; color: #888;
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+      }
+      .ribbon-icon { width: 28px; height: 28px; background: #e8e8e8; border-radius: 4px; }
+
+      .doc-area {
+        position: absolute; top: 146px; left: 0; right: 0; bottom: 0;
+        background: #ececec;
+        padding: 30px 60px 60px;
+        overflow: hidden;
+      }
+      .page {
+        background: #fff; width: 100%; max-width: 900px; margin: 0 auto;
+        min-height: 100%;
+        padding: 60px 70px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        position: relative;
+      }
+      .doc-line {
+        font-size: 16px; color: #222; line-height: 1.6;
+        margin: 6px 0; font-weight: 400;
+        font-family: "Calibri", "Segoe UI", sans-serif;
+      }
+      .doc-line.body { color: #444; font-size: 14px; margin: 8px 0 14px; line-height: 1.5; }
+
+      .as-title {
+        font-size: 38px !important; color: #0e0e0e !important;
+        font-weight: 300 !important; letter-spacing: -0.5px;
+        font-family: "Calibri Light", "Segoe UI Light", sans-serif !important;
+        border-bottom: 1px solid #0078D4;
+        padding-bottom: 8px; margin-bottom: 22px !important;
+      }
+      .as-h1 {
+        font-size: 22px !important; color: #0078D4 !important;
+        font-weight: 600 !important; margin-top: 18px !important;
+      }
+      .as-h2 {
+        font-size: 17px !important; color: #2b88d8 !important;
+        font-weight: 600 !important; margin-top: 12px !important; margin-left: 10px;
+      }
+
+      .sel-highlight {
+        position: absolute; background: rgba(0,120,212,0.22);
+        border: 1px solid rgba(0,120,212,0.6);
+        border-radius: 2px; pointer-events: none; opacity: 0;
+      }
+      .checkmark {
+        position: absolute;
+        font-size: 18px; color: #28a745; font-weight: bold; opacity: 0;
+      }
+
+      .cursor {
+        position: absolute;
+        width: 18px; height: 24px;
+        z-index: 20; opacity: 0; pointer-events: none;
+      }
+      .cursor svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4)); }
+
+      .annotation {
+        position: absolute;
+        font-size: 18px; color: #ffd166; font-weight: 600;
+        background: rgba(40, 30, 10, 0.92);
+        padding: 8px 14px; border-radius: 6px;
+        border: 1px solid #ffd166; white-space: nowrap;
+      }
+      .annotation::before {
+        content: ""; position: absolute;
+        width: 80px; height: 2px; background: #ffd166;
+        left: -82px; top: 50%;
+      }
+      .annotation::after {
+        content: ""; position: absolute;
+        left: -90px; top: 50%; transform: translateY(-50%);
+        border: 6px solid transparent; border-right-color: #ffd166;
+      }
+
+      .nav-pane {
+        position: absolute; top: 146px; left: 0; bottom: 0; width: 320px;
+        background: #f7f7f7; border-right: 1px solid #d0d0d0;
+        padding: 16px 12px; transform: translateX(-100%);
+        z-index: 5;
+      }
+      .nav-pane h4 {
+        font-size: 13px; color: #333; margin-bottom: 12px;
+        padding-bottom: 8px; border-bottom: 1px solid #d0d0d0;
+      }
+      .nav-item {
+        font-size: 13px; color: #222; padding: 5px 8px;
+        border-radius: 3px; margin: 1px 0;
+      }
+      .nav-item.l1 { font-weight: 600; color: #0078D4; }
+      .nav-item.l2 { padding-left: 22px; color: #444; }
+      .nav-item.active { background: #cce4f7; }
+
+      .modify-dialog {
+        position: absolute; left: 50%; top: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 560px; background: #fdfdfd;
+        border: 1px solid #c0c0c0; border-radius: 6px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        opacity: 0; z-index: 30; overflow: hidden;
+      }
+      .modify-dialog .dh {
+        background: #0078D4; color: #fff;
+        padding: 10px 16px; font-size: 14px; font-weight: 500;
+      }
+      .modify-dialog .db { padding: 18px 22px; color: #222; font-size: 13px; }
+      .modify-dialog .row { display: flex; gap: 10px; align-items: center; margin: 10px 0; }
+      .modify-dialog label { width: 90px; font-size: 12px; color: #444; }
+      .modify-dialog .field {
+        flex: 1; height: 28px; background: #fff; border: 1px solid #bbb;
+        border-radius: 3px; padding: 4px 8px; font-size: 12px;
+        display: flex; align-items: center;
+      }
+      .modify-dialog .swatch {
+        width: 22px; height: 22px; border: 1px solid #888; border-radius: 2px;
+        background: #0078D4;
+      }
+      .modify-dialog .preview-line {
+        font-size: 18px; font-weight: 600; color: #0078D4;
+        padding: 12px; background: #f8f8f8; border: 1px solid #e0e0e0;
+        margin-top: 12px;
+      }
+      .modify-dialog .actions {
+        display: flex; gap: 8px; justify-content: flex-end;
+        padding: 12px 22px; background: #f3f3f3; border-top: 1px solid #e0e0e0;
+      }
+      .btn {
+        padding: 6px 18px; font-size: 12px; border-radius: 3px;
+        background: #fff; border: 1px solid #b0b0b0; color: #333;
+      }
+      .btn.primary { background: #0078D4; color: #fff; border-color: #0078D4; }
+
+      .ctx-menu {
+        position: absolute; background: #fff; border: 1px solid #b0b0b0;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        font-size: 12px; padding: 4px 0; min-width: 180px;
+        opacity: 0; z-index: 25;
+      }
+      .ctx-item { padding: 6px 18px; color: #222; }
+      .ctx-item.hover { background: #cce4f7; color: #000; }
+
+      .avatar {
+        position: absolute;
+        right: 60px; bottom: 80px;
+        width: 250px; height: 250px;
+        z-index: 50;
+      }
+      .avatar-frame {
+        width: 250px; height: 250px; border-radius: 50%;
+        background: linear-gradient(135deg, #0078D4 0%, #1e3a8a 60%, #0a0e2e 100%);
+        position: relative;
+        box-shadow: 0 0 0 3px #0078D4, 0 0 0 7px rgba(0,120,212,0.25),
+                    0 20px 50px rgba(0,0,0,0.6);
+        overflow: hidden;
+      }
+      .avatar-frame::after {
+        content: ""; position: absolute; inset: 0;
+        background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), transparent 55%);
+      }
+      .avatar-silhouette {
+        position: absolute; left: 50%; top: 50%;
+        transform: translate(-50%, -42%);
+        width: 200px; height: 220px;
+      }
+      .avatar-silhouette .head {
+        width: 80px; height: 80px; border-radius: 50%;
+        background: linear-gradient(180deg, #cfe5fa 0%, #8fb8e0 100%);
+        margin: 28px auto 0;
+        box-shadow: inset -6px -8px 14px rgba(0,0,0,0.18);
+      }
+      .avatar-silhouette .body {
+        width: 180px; height: 110px; margin: -10px auto 0;
+        border-radius: 90px 90px 0 0;
+        background: linear-gradient(180deg, #2c5282 0%, #1a365d 100%);
+        box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2);
+      }
+      .avatar-label {
+        position: absolute; left: 50%; bottom: -54px;
+        transform: translateX(-50%);
+        text-align: center; white-space: nowrap;
+      }
+      .avatar-label .name {
+        font-size: 18px; font-weight: 600; color: #fff;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      }
+      .avatar-label .role {
+        font-size: 13px; color: #9ec5ec; margin-top: 2px;
+        text-transform: uppercase; letter-spacing: 1.5px;
+      }
+      .avatar-pulse {
+        position: absolute; inset: -10px; border-radius: 50%;
+        border: 2px solid rgba(0,120,212,0.5);
+        animation: pulse 3s ease-out infinite;
+      }
+      @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.7; }
+        100% { transform: scale(1.15); opacity: 0; }
+      }
+
+      .lt {
+        position: absolute;
+        left: 80px; top: 920px;
+        z-index: 40; opacity: 0;
+        transform: translateX(-40px);
+      }
+      .lt-bar {
+        width: 6px; height: 60px; background: #0078D4;
+        display: inline-block; vertical-align: middle;
+        box-shadow: 0 0 14px rgba(0,120,212,0.7);
+      }
+      .lt-text { display: inline-block; vertical-align: middle; margin-left: 18px; }
+      .lt-num { font-size: 13px; color: #0078D4; letter-spacing: 3px; font-weight: 600; }
+      .lt-title { font-size: 26px; color: #fff; font-weight: 600; margin-top: 4px; }
+
+      .caption {
+        position: absolute;
+        left: 50%; bottom: 30px;
+        transform: translateX(-50%);
+        max-width: 1280px;
+        background: rgba(10,12,20,0.85);
+        border: 1px solid rgba(0,120,212,0.4);
+        border-radius: 8px;
+        padding: 14px 26px;
+        font-size: 19px; line-height: 1.45; color: #f0f0f5;
+        text-align: center;
+        opacity: 0; z-index: 45;
+      }
+
+      .progress {
+        position: absolute; left: 0; bottom: 0;
+        height: 4px; width: 100%;
+        background: rgba(255,255,255,0.08);
+        z-index: 60;
+      }
+      .progress-fill {
+        height: 100%; width: 0%;
+        background: linear-gradient(90deg, #0078D4, #45b1ff);
+        box-shadow: 0 0 12px rgba(0,120,212,0.7);
+      }
+
+      .watermark {
+        position: absolute; left: 30px; top: 28px;
+        font-size: 12px; color: rgba(255,255,255,0.35);
+        letter-spacing: 4px; text-transform: uppercase;
+        font-weight: 500; z-index: 55;
+      }
+
+      .takeaways {
+        position: absolute; inset: 0; background: #1e1e2e;
+        z-index: 70;
+        display: flex; flex-direction: column; align-items: center;
+        padding: 100px 80px 80px;
+      }
+      .takeaways h2 {
+        font-size: 48px; font-weight: 700; color: #fff;
+        margin-bottom: 12px; text-align: center;
+      }
+      .takeaways .subtitle {
+        font-size: 20px; color: #9ec5ec; letter-spacing: 4px;
+        text-transform: uppercase; margin-bottom: 50px;
+      }
+      .cards {
+        display: grid; grid-template-columns: repeat(2, 1fr);
+        gap: 30px; width: 1200px; margin-bottom: 40px;
+      }
+      .card {
+        background: linear-gradient(145deg, #2a2a40 0%, #1a1a2e 100%);
+        border: 1px solid rgba(0,120,212,0.4);
+        border-radius: 14px;
+        padding: 28px 32px;
+        opacity: 0;
+        transform: translateY(30px);
+        display: flex; align-items: center; gap: 22px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      }
+      .card-icon {
+        width: 70px; height: 70px; flex-shrink: 0;
+        background: linear-gradient(135deg, #0078D4, #45b1ff);
+        border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 32px; color: #fff;
+        box-shadow: 0 8px 24px rgba(0,120,212,0.5);
+      }
+      .card-text .h { font-size: 22px; font-weight: 700; color: #fff; }
+      .card-text .d { font-size: 14px; color: #b0b8d0; margin-top: 6px; }
+      .credits { margin-top: auto; text-align: center; opacity: 0; }
+      .credits .by { font-size: 16px; color: #9ec5ec; letter-spacing: 2px; }
+      .credits .name { font-size: 28px; color: #fff; font-weight: 600; margin-top: 4px; }
+      .credits .org { font-size: 14px; color: #888; margin-top: 6px; letter-spacing: 3px; }
     </style>
   </head>
   <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
-    >
-      
-      
+    <div id="root" data-composition-id="root" data-start="0" data-duration="210" data-width="1920" data-height="1080">
 
-      <!--
-        Add your clips here. Example:
-        <div id="title" class="clip" data-start="0" data-duration="5" data-track-index="1"
-             style="font-size: 64px; color: #fff; padding: 40px">
-          Hello World
+      <div class="watermark">Morgan Lewis</div>
+
+      <div class="word-window clip" data-start="0" data-duration="180" data-track-index="1">
+        <div class="titlebar">
+          <div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+          <div class="doc-title">Document Review Summary.docx — Word</div>
         </div>
-      -->
+        <div class="ribbon">
+          <div class="ribbon-tabs">
+            <div class="ribbon-tab">File</div>
+            <div class="ribbon-tab active" id="tab-home">Home</div>
+            <div class="ribbon-tab" id="tab-insert">Insert</div>
+            <div class="ribbon-tab" id="tab-design">Design</div>
+            <div class="ribbon-tab" id="tab-layout">Layout</div>
+            <div class="ribbon-tab" id="tab-references">References</div>
+            <div class="ribbon-tab" id="tab-view">View</div>
+            <div class="ribbon-tab">Help</div>
+          </div>
+          <div class="ribbon-body">
+            <div class="ribbon-group"><div class="ribbon-icon"></div><span>Paste</span></div>
+            <div class="ribbon-group"><div class="ribbon-icon"></div><span>Font</span></div>
+            <div class="styles-gallery" id="styles-gallery">
+              <div class="style-btn normal" id="sb-normal"><span class="preview">Normal</span><span class="name">Normal</span><span class="glow"></span></div>
+              <div class="style-btn title" id="sb-title"><span class="preview">Title</span><span class="name">Title</span><span class="glow"></span></div>
+              <div class="style-btn h1" id="sb-h1"><span class="preview">Heading 1</span><span class="name">Heading 1</span><span class="glow"></span></div>
+              <div class="style-btn h2" id="sb-h2"><span class="preview">Heading 2</span><span class="name">Heading 2</span><span class="glow"></span></div>
+              <div class="style-btn h3" id="sb-h3"><span class="preview">Heading 3</span><span class="name">Heading 3</span><span class="glow"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-area">
+
+          <div class="page clip" id="scene1-doc" data-start="0" data-duration="25" data-track-index="2">
+            <div class="doc-line" id="s1-l1">Document Review Summary</div>
+            <div class="doc-line" id="s1-l2">Background</div>
+            <div class="doc-line" id="s1-l3">Key Themes</div>
+            <div class="doc-line" id="s1-l4">Responsiveness</div>
+            <div class="doc-line" id="s1-l5">Clarity</div>
+            <div class="doc-line" id="s1-l6">Consistency</div>
+            <div class="doc-line" id="s1-l7">Recommended Next Steps</div>
+            <div class="cursor" id="s1-cursor" style="left: 360px; top: 24px;">
+              <svg viewBox="0 0 18 24"><path d="M2 2 L2 18 L7 14 L11 22 L13 21 L9 13 L16 13 Z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>
+            </div>
+            <div class="annotation" id="s1-annot" style="left: 600px; top: 28px;">Plain paragraphs — no structure</div>
+          </div>
+
+          <div class="page clip" id="scene2-doc" data-start="25" data-duration="30" data-track-index="2">
+            <div class="doc-line" id="s2-title">Document Review Summary</div>
+            <div class="doc-line">Background</div>
+            <div class="doc-line">Key Themes</div>
+            <div class="doc-line">Responsiveness</div>
+            <div class="doc-line">Clarity</div>
+            <div class="doc-line">Consistency</div>
+            <div class="doc-line">Recommended Next Steps</div>
+            <div class="sel-highlight" id="s2-sel" style="left: 0; top: 0; width: 320px; height: 28px;"></div>
+            <div class="cursor" id="s2-cursor" style="left: 80px; top: 0;">
+              <svg viewBox="0 0 18 24"><path d="M2 2 L2 18 L7 14 L11 22 L13 21 L9 13 L16 13 Z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>
+            </div>
+          </div>
+
+          <div class="page clip" id="scene3-doc" data-start="55" data-duration="30" data-track-index="2">
+            <div class="doc-line as-title">Document Review Summary</div>
+            <div class="doc-line">Background</div>
+            <div class="doc-line">Key Themes</div>
+            <div class="doc-line">Responsiveness</div>
+            <div class="doc-line">Clarity</div>
+            <div class="doc-line">Consistency</div>
+            <div class="doc-line">Recommended Next Steps</div>
+            <div class="sel-highlight" id="s3-sel-a" style="left: 0; top: 90px; width: 0; height: 26px;"></div>
+            <div class="sel-highlight" id="s3-sel-b" style="left: 0; top: 122px; width: 0; height: 26px;"></div>
+            <div class="sel-highlight" id="s3-sel-c" style="left: 0; top: 250px; width: 0; height: 26px;"></div>
+            <div class="checkmark" id="s3-ck-a" style="left: 200px; top: 90px;">✓</div>
+            <div class="checkmark" id="s3-ck-b" style="left: 200px; top: 122px;">✓</div>
+            <div class="checkmark" id="s3-ck-c" style="left: 320px; top: 250px;">✓</div>
+            <div class="cursor" id="s3-cursor" style="left: 80px; top: 90px;">
+              <svg viewBox="0 0 18 24"><path d="M2 2 L2 18 L7 14 L11 22 L13 21 L9 13 L16 13 Z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>
+            </div>
+          </div>
+
+          <div class="page clip" id="scene4-doc" data-start="85" data-duration="30" data-track-index="2">
+            <div class="doc-line as-title">Document Review Summary</div>
+            <div class="doc-line as-h1">Background</div>
+            <div class="doc-line body">A high-level overview of the documents reviewed and their general scope.</div>
+            <div class="doc-line as-h1">Key Themes</div>
+            <div class="doc-line">Responsiveness</div>
+            <div class="doc-line body">Whether each document fully addresses the request as stated.</div>
+            <div class="doc-line">Clarity</div>
+            <div class="doc-line body">How clearly the message is conveyed for the intended audience.</div>
+            <div class="doc-line">Consistency</div>
+            <div class="doc-line body">Alignment with prior client guidance and tone.</div>
+            <div class="doc-line as-h1">Recommended Next Steps</div>
+            <div class="sel-highlight" id="s4-sel-a" style="left:0; top:268px; width:0; height:26px;"></div>
+            <div class="sel-highlight" id="s4-sel-b" style="left:0; top:348px; width:0; height:26px;"></div>
+            <div class="sel-highlight" id="s4-sel-c" style="left:0; top:428px; width:0; height:26px;"></div>
+            <div class="cursor" id="s4-cursor" style="left: 80px; top: 0;">
+              <svg viewBox="0 0 18 24"><path d="M2 2 L2 18 L7 14 L11 22 L13 21 L9 13 L16 13 Z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>
+            </div>
+          </div>
+
+          <div class="page clip" id="scene5-doc" data-start="115" data-duration="30" data-track-index="2">
+            <div class="doc-line as-title">Document Review Summary</div>
+            <div class="doc-line as-h1">Background</div>
+            <div class="doc-line body">A high-level overview of the documents reviewed and their general scope.</div>
+            <div class="doc-line as-h1">Key Themes</div>
+            <div class="doc-line as-h2">Responsiveness</div>
+            <div class="doc-line body">Whether each document fully addresses the request as stated.</div>
+            <div class="doc-line as-h2">Clarity</div>
+            <div class="doc-line body">How clearly the message is conveyed for the intended audience.</div>
+            <div class="doc-line as-h2">Consistency</div>
+            <div class="doc-line body">Alignment with prior client guidance and tone.</div>
+            <div class="doc-line as-h1">Recommended Next Steps</div>
+          </div>
+
+          <div class="page clip" id="scene6-doc" data-start="145" data-duration="30" data-track-index="2">
+            <div class="doc-line as-title">Document Review Summary</div>
+            <div class="doc-line as-h1 s6-h1">Background</div>
+            <div class="doc-line body">A high-level overview of the documents reviewed and their general scope.</div>
+            <div class="doc-line as-h1 s6-h1">Key Themes</div>
+            <div class="doc-line as-h2">Responsiveness</div>
+            <div class="doc-line body">Whether each document fully addresses the request as stated.</div>
+            <div class="doc-line as-h2">Clarity</div>
+            <div class="doc-line body">How clearly the message is conveyed for the intended audience.</div>
+            <div class="doc-line as-h2">Consistency</div>
+            <div class="doc-line body">Alignment with prior client guidance and tone.</div>
+            <div class="doc-line as-h1 s6-h1">Recommended Next Steps</div>
+          </div>
+
+        </div>
+
+        <div class="nav-pane clip" id="nav-pane" data-start="115" data-duration="30" data-track-index="3">
+          <h4>Navigation</h4>
+          <div class="nav-item l1" id="nav-bg">Background</div>
+          <div class="nav-item l1" id="nav-kt">Key Themes</div>
+          <div class="nav-item l2" id="nav-resp">Responsiveness</div>
+          <div class="nav-item l2" id="nav-cla">Clarity</div>
+          <div class="nav-item l2" id="nav-con">Consistency</div>
+          <div class="nav-item l1" id="nav-rec">Recommended Next Steps</div>
+        </div>
+
+        <div class="ctx-menu clip" id="ctx-menu" data-start="145" data-duration="6" data-track-index="4" style="left: 540px; top: 200px;">
+          <div class="ctx-item">Update Heading 1 to Match Selection</div>
+          <div class="ctx-item hover" id="ctx-modify">Modify…</div>
+          <div class="ctx-item">Select All</div>
+          <div class="ctx-item">Rename…</div>
+          <div class="ctx-item">Remove from Style Gallery</div>
+        </div>
+        <div class="modify-dialog clip" id="modify-dialog" data-start="151" data-duration="20" data-track-index="5">
+          <div class="dh">Modify Style — Heading 1</div>
+          <div class="db">
+            <div class="row"><label>Name:</label><div class="field">Heading 1</div></div>
+            <div class="row"><label>Style type:</label><div class="field">Linked (paragraph and character)</div></div>
+            <div class="row"><label>Font:</label><div class="field">Calibri Light, 16 pt, Bold</div></div>
+            <div class="row"><label>Color:</label><div class="field" style="display:flex;gap:8px;align-items:center;"><div class="swatch" id="md-swatch"></div><span id="md-color-name">Blue, Accent 1</span></div></div>
+            <div class="preview-line" id="md-preview">Heading 1 Preview</div>
+          </div>
+          <div class="actions">
+            <button class="btn">Format ▼</button>
+            <button class="btn primary" id="md-ok">OK</button>
+            <button class="btn">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="takeaways clip" id="takeaways" data-start="175" data-duration="35" data-track-index="10">
+        <h2>Key Takeaways</h2>
+        <div class="subtitle">Word Styles for Legal Professionals</div>
+        <div class="cards">
+          <div class="card" id="card-1">
+            <div class="card-icon">★</div>
+            <div class="card-text">
+              <div class="h">Format by Role, Not Appearance</div>
+              <div class="d">Tag content as Title, Heading 1, Heading 2, or Normal — let Word handle the look.</div>
+            </div>
+          </div>
+          <div class="card" id="card-2">
+            <div class="card-icon">✓</div>
+            <div class="card-text">
+              <div class="h">Consistent Documents</div>
+              <div class="d">Every heading and section matches across the document, every time.</div>
+            </div>
+          </div>
+          <div class="card" id="card-3">
+            <div class="card-icon">⌖</div>
+            <div class="card-text">
+              <div class="h">Easy Navigation &amp; TOC</div>
+              <div class="d">Generate a table of contents and outline view automatically from your styles.</div>
+            </div>
+          </div>
+          <div class="card" id="card-4">
+            <div class="card-icon">⏱</div>
+            <div class="card-text">
+              <div class="h">Saves Time</div>
+              <div class="d">Modify a style once and every instance updates throughout the document.</div>
+            </div>
+          </div>
+        </div>
+        <div class="credits" id="credits">
+          <div class="by">Prepared by</div>
+          <div class="name">Dr. Fabiano de Souza</div>
+          <div class="org">Technology Instructor · Morgan Lewis</div>
+        </div>
+      </div>
+
+      <div class="avatar clip" data-start="0" data-duration="180" data-track-index="80" id="avatar-block">
+        <div class="avatar-frame">
+          <div class="avatar-pulse"></div>
+          <div class="avatar-silhouette">
+            <div class="head"></div>
+            <div class="body"></div>
+          </div>
+        </div>
+        <div class="avatar-label">
+          <div class="name">Dr. Fabiano de Souza</div>
+          <div class="role">Technology Instructor</div>
+        </div>
+      </div>
+
+      <div class="lt clip" id="lt-1" data-start="1" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 01</div><div class="lt-title">Introduction</div></span>
+      </div>
+      <div class="lt clip" id="lt-2" data-start="26" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 02</div><div class="lt-title">Apply the Title Style</div></span>
+      </div>
+      <div class="lt clip" id="lt-3" data-start="56" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 03</div><div class="lt-title">Apply Heading 1</div></span>
+      </div>
+      <div class="lt clip" id="lt-4" data-start="86" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 04</div><div class="lt-title">Apply Heading 2</div></span>
+      </div>
+      <div class="lt clip" id="lt-5" data-start="116" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 05</div><div class="lt-title">Navigation Pane</div></span>
+      </div>
+      <div class="lt clip" id="lt-6" data-start="146" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 06</div><div class="lt-title">Modify a Style</div></span>
+      </div>
+      <div class="lt clip" id="lt-7" data-start="176" data-duration="6" data-track-index="90">
+        <span class="lt-bar"></span><span class="lt-text"><div class="lt-num">SCENE 07</div><div class="lt-title">Key Takeaways</div></span>
+      </div>
+
+      <div class="caption clip" id="cap-1" data-start="1" data-duration="24" data-track-index="95">
+        Welcome to this short demonstration of Word Styles. On screen you see our practice document titled <b>Document Review Summary</b>. The title and headings are manually formatted, but Word treats them as plain paragraphs.
+      </div>
+      <div class="caption clip" id="cap-2" data-start="26" data-duration="29" data-track-index="95">
+        Select the title <b>Document Review Summary</b> and apply the <b>Title</b> style from the Styles gallery. This tells Word that this line is the document's title.
+      </div>
+      <div class="caption clip" id="cap-3" data-start="56" data-duration="29" data-track-index="95">
+        Next, select the major sections — <b>Background</b>, <b>Key Themes</b>, and <b>Recommended Next Steps</b> — and apply <b>Heading 1</b>. These define the main sections.
+      </div>
+      <div class="caption clip" id="cap-4" data-start="86" data-duration="29" data-track-index="95">
+        Now select <b>Responsiveness</b>, <b>Clarity</b>, and <b>Consistency</b>. They belong under Key Themes, so apply <b>Heading 2</b>. Leave the paragraphs beneath as Normal.
+      </div>
+      <div class="caption clip" id="cap-5" data-start="116" data-duration="29" data-track-index="95">
+        Open the <b>Navigation Pane</b> from the View tab. Word now shows a structured outline — major sections at the top level, subsections nested underneath.
+      </div>
+      <div class="caption clip" id="cap-6" data-start="146" data-duration="29" data-track-index="95">
+        To change formatting, right-click the <b>Heading 1</b> style → <b>Modify</b>, change the font or color, click <b>OK</b>. Every Heading 1 updates automatically.
+      </div>
+      <div class="caption clip" id="cap-7" data-start="176" data-duration="34" data-track-index="95">
+        Styles give Word the structural information it needs. Format by role — not appearance — for consistent, client-ready documents.
+      </div>
+
+      <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+
     </div>
 
     <script>
-      window.__timelines = window.__timelines || {};
+      const $ = (id) => document.getElementById(id);
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.from("#title", { opacity: 0, y: -50, duration: 1 }, 0);
-      window.__timelines["main"] = tl;
+
+      // Progress bar
+      tl.fromTo("#progress-fill", { width: "0%" }, { width: "100%", duration: 210, ease: "none" }, 0);
+
+      function ltAnim(sel, t) {
+        tl.fromTo(sel, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }, t)
+          .to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, t + 5.6);
+      }
+      ltAnim("#lt-1", 1); ltAnim("#lt-2", 26); ltAnim("#lt-3", 56);
+      ltAnim("#lt-4", 86); ltAnim("#lt-5", 116); ltAnim("#lt-6", 146); ltAnim("#lt-7", 176);
+
+      function capAnim(sel, t, dur) {
+        tl.fromTo(sel, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, t)
+          .to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, t + dur - 0.4);
+      }
+      capAnim("#cap-1", 1, 24); capAnim("#cap-2", 26, 29); capAnim("#cap-3", 56, 29);
+      capAnim("#cap-4", 86, 29); capAnim("#cap-5", 116, 29); capAnim("#cap-6", 146, 29);
+      capAnim("#cap-7", 176, 34);
+
+      // ============ SCENE 1 ============
+      tl.from("#scene1-doc .doc-line", { opacity: 0, y: 10, stagger: 0.18, duration: 0.6, ease: "power2.out" }, 1.5);
+      tl.fromTo("#s1-cursor", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 9);
+      tl.to("#s1-cursor", { left: 760, top: 56, duration: 1.6, ease: "power2.inOut" }, 10);
+      tl.to("#s1-cursor", { left: 600, top: 36, duration: 1.2, ease: "power2.inOut" }, 12);
+      tl.fromTo("#s1-annot", { opacity: 0, x: 10 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, 13);
+
+      // ============ SCENE 2: Apply Title ============
+      tl.fromTo("#s2-cursor", { opacity: 0, left: 80, top: 0 }, { opacity: 1, duration: 0.4 }, 27);
+      tl.to("#s2-cursor", { left: 320, top: 8, duration: 1.4, ease: "power2.inOut" }, 28);
+      tl.fromTo("#s2-sel", { opacity: 0, width: 0 }, { opacity: 1, width: 320, duration: 0.7, ease: "power2.out" }, 29.5);
+      tl.to("#s2-cursor", { left: 980, top: -110, duration: 1.6, ease: "power2.inOut" }, 31);
+      tl.to("#sb-title .glow", { opacity: 1, duration: 0.4 }, 33);
+      tl.add(() => $("sb-title").classList.add("highlight"), 33);
+      tl.to("#s2-title", {
+        duration: 1.2, ease: "power3.out",
+        fontSize: "38px", fontWeight: 300, color: "#0e0e0e",
+        paddingBottom: "8px", marginBottom: "22px",
+        borderBottom: "1px solid #0078D4"
+      }, 34);
+      tl.to(["#sb-title .glow", "#s2-sel"], { opacity: 0, duration: 0.6 }, 38);
+      tl.add(() => $("sb-title").classList.remove("highlight"), 38);
+      tl.to("#s2-cursor", { opacity: 0, duration: 0.4 }, 42);
+
+      // ============ SCENE 3: Apply Heading 1 ============
+      tl.fromTo("#s3-cursor", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 57);
+      tl.to("#s3-cursor", { left: 80, top: 95, duration: 0.8, ease: "power2.inOut" }, 57.4);
+      tl.fromTo("#s3-sel-a", { opacity: 0, width: 0 }, { opacity: 1, width: 160, duration: 0.5 }, 58.4);
+      tl.to("#s3-cursor", { left: 80, top: 127, duration: 0.7, ease: "power2.inOut" }, 59);
+      tl.fromTo("#s3-sel-b", { opacity: 0, width: 0 }, { opacity: 1, width: 180, duration: 0.5 }, 59.8);
+      tl.to("#s3-cursor", { left: 80, top: 255, duration: 0.9, ease: "power2.inOut" }, 60.4);
+      tl.fromTo("#s3-sel-c", { opacity: 0, width: 0 }, { opacity: 1, width: 280, duration: 0.5 }, 61.4);
+      tl.to("#s3-cursor", { left: 1080, top: -110, duration: 1.6, ease: "power2.inOut" }, 62.5);
+      tl.to("#sb-h1 .glow", { opacity: 1, duration: 0.4 }, 64);
+      tl.add(() => $("sb-h1").classList.add("highlight"), 64);
+      const h1Style = { color: "#0078D4", fontSize: "22px", fontWeight: 600, marginTop: "18px", duration: 0.7, ease: "power2.out" };
+      tl.to("#scene3-doc .doc-line:nth-child(2)", h1Style, 65);
+      tl.to("#scene3-doc .doc-line:nth-child(3)", h1Style, 65.2);
+      tl.to("#scene3-doc .doc-line:nth-child(7)", h1Style, 65.4);
+      tl.fromTo("#s3-ck-a", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 66.5);
+      tl.fromTo("#s3-ck-b", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 66.8);
+      tl.fromTo("#s3-ck-c", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 67.1);
+      tl.to(["#s3-sel-a", "#s3-sel-b", "#s3-sel-c", "#sb-h1 .glow"], { opacity: 0, duration: 0.6 }, 79);
+      tl.add(() => $("sb-h1").classList.remove("highlight"), 79);
+      tl.to("#s3-cursor", { opacity: 0, duration: 0.5 }, 79);
+
+      // ============ SCENE 4: Apply Heading 2 ============
+      tl.fromTo("#s4-cursor", { opacity: 0, left: 80, top: 240 }, { opacity: 1, duration: 0.4 }, 87);
+      tl.to("#s4-cursor", { left: 80, top: 270, duration: 0.7, ease: "power2.inOut" }, 88);
+      tl.fromTo("#s4-sel-a", { opacity: 0, width: 0 }, { opacity: 1, width: 200, duration: 0.5 }, 88.6);
+      tl.to("#s4-cursor", { left: 90, top: 350, duration: 0.7, ease: "power2.inOut" }, 89.4);
+      tl.fromTo("#s4-sel-b", { opacity: 0, width: 0 }, { opacity: 1, width: 130, duration: 0.5 }, 90);
+      tl.to("#s4-cursor", { left: 90, top: 430, duration: 0.7, ease: "power2.inOut" }, 90.7);
+      tl.fromTo("#s4-sel-c", { opacity: 0, width: 0 }, { opacity: 1, width: 160, duration: 0.5 }, 91.3);
+      tl.to("#s4-cursor", { left: 1180, top: -110, duration: 1.6, ease: "power2.inOut" }, 92.4);
+      tl.to("#sb-h2 .glow", { opacity: 1, duration: 0.4 }, 94);
+      tl.add(() => $("sb-h2").classList.add("highlight"), 94);
+      const h2Style = { color: "#2b88d8", fontSize: "17px", fontWeight: 600, marginLeft: "10px", marginTop: "12px", duration: 0.7, ease: "power2.out" };
+      tl.to("#scene4-doc .doc-line:nth-child(5)", h2Style, 95);
+      tl.to("#scene4-doc .doc-line:nth-child(7)", h2Style, 95.2);
+      tl.to("#scene4-doc .doc-line:nth-child(9)", h2Style, 95.4);
+      tl.to(["#s4-sel-a", "#s4-sel-b", "#s4-sel-c", "#sb-h2 .glow"], { opacity: 0, duration: 0.6 }, 109);
+      tl.add(() => $("sb-h2").classList.remove("highlight"), 109);
+      tl.to("#s4-cursor", { opacity: 0, duration: 0.5 }, 109);
+
+      // ============ SCENE 5: Navigation Pane ============
+      tl.add(() => { $("tab-home").classList.remove("active"); $("tab-view").classList.add("active"); }, 117);
+      tl.fromTo("#nav-pane", { x: -320 }, { x: 0, duration: 0.9, ease: "power3.out" }, 118);
+      tl.from("#nav-pane h4, #nav-pane .nav-item", { opacity: 0, x: -20, stagger: 0.12, duration: 0.4, ease: "power2.out" }, 119);
+      const navOrder = ["nav-bg", "nav-kt", "nav-resp", "nav-cla", "nav-con", "nav-rec"];
+      navOrder.forEach((id, i) => {
+        const t = 124 + i * 2.5;
+        tl.add(() => $(id).classList.add("active"), t);
+        tl.add(() => $(id).classList.remove("active"), t + 1.2);
+      });
+      tl.to("#nav-pane", { x: -320, duration: 0.6, ease: "power2.in" }, 144);
+      tl.add(() => { $("tab-view").classList.remove("active"); $("tab-home").classList.add("active"); }, 144.6);
+
+      // ============ SCENE 6: Modify Style ============
+      tl.fromTo("#ctx-menu", { opacity: 0, scale: 0.95, transformOrigin: "top left" }, { opacity: 1, scale: 1, duration: 0.3 }, 147);
+      tl.fromTo("#modify-dialog", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, 151);
+      tl.to("#ctx-menu", { opacity: 0, duration: 0.3 }, 151);
+      tl.to("#md-swatch", { backgroundColor: "#0a5d2c", duration: 0.5 }, 158);
+      tl.add(() => { $("md-color-name").textContent = "Dark Green"; }, 158);
+      tl.to("#md-preview", { color: "#0a5d2c", duration: 0.5 }, 158.3);
+      tl.fromTo("#md-ok", { backgroundColor: "#0078D4" }, { backgroundColor: "#005a9e", duration: 0.15, yoyo: true, repeat: 1 }, 162);
+      tl.to("#modify-dialog", { opacity: 0, scale: 0.95, duration: 0.4, ease: "power2.in" }, 162.5);
+      tl.to("#sb-h1 .preview", { color: "#0a5d2c", duration: 0.4 }, 163);
+      tl.to(".s6-h1", { color: "#0a5d2c", duration: 0.6, stagger: 0.18, ease: "power2.out" }, 163.2);
+      tl.fromTo(".s6-h1", { scale: 1 }, { scale: 1.04, duration: 0.25, stagger: 0.18, yoyo: true, repeat: 1, ease: "power2.inOut" }, 163.2);
+
+      // ============ SCENE 7: Takeaways ============
+      tl.fromTo("#takeaways", { opacity: 0 }, { opacity: 1, duration: 0.7, ease: "power2.out" }, 175);
+      tl.from("#takeaways h2", { opacity: 0, y: 30, duration: 0.7, ease: "power3.out" }, 176);
+      tl.from("#takeaways .subtitle", { opacity: 0, y: 20, duration: 0.6, ease: "power2.out" }, 176.6);
+      tl.to("#card-1", { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 178);
+      tl.to("#card-2", { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 179.2);
+      tl.to("#card-3", { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 180.4);
+      tl.to("#card-4", { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 181.6);
+      tl.to("#credits", { opacity: 1, duration: 0.8, ease: "power2.out" }, 184);
+      tl.from("#credits .name", { opacity: 0, y: 18, duration: 0.7, ease: "power3.out" }, 184.2);
+      tl.from("#credits .org", { opacity: 0, y: 12, duration: 0.6, ease: "power2.out" }, 184.7);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["root"] = tl;
     </script>
   </body>
 </html>
