@@ -70,7 +70,7 @@ const levels=[
  {nome:'Nível 2 — Aplicações',qs:Array.from({length:5}).map((_,i)=>({concept:`Aplicações ${i+1}`,script:'Trecho do roteiro (não fornecido nesta solicitação).',citation:'Roteiro-base',exp:'Questão de espaço reservada para o texto exato do roteiro.',options:['A) Opção A','B) Opção B','C) Opção C','D) Opção D'],correct:0}))},
  {nome:'Nível 3 — Domínio Avançado',qs:Array.from({length:4}).map((_,i)=>({concept:`Domínio ${i+1}`,script:'Trecho do roteiro (não fornecido nesta solicitação).',citation:'Roteiro-base',exp:'Questão de espaço reservada para o texto exato do roteiro.',options:['A) Opção A','B) Opção B','C) Opção C','D) Opção D'],correct:0}))}
 ];
-const workerURL='https://ai-literacy-leaderboard.YOUR-SUBDOMAIN.workers.dev';
+const workerURL='https://ai-literacy-leaderboard.mrdesouzaphd.workers.dev';
 let li=0,qi=0,score=0,lives=3,typing=false,diamonds=0,coins=0,streak=0,noErrors=true;
 const total=14,audio=new (window.AudioContext||window.webkitAudioContext)();
 const tone=(f,t=.12,type='sine',when=0)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=f;g.gain.value=.0001;o.connect(g);g.connect(audio.destination);const now=audio.currentTime+when;g.gain.exponentialRampToValueAtTime(.2,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+t);o.start(now);o.stop(now+t+.02)};
