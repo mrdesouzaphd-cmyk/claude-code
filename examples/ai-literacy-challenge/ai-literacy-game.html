@@ -5,48 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A.I. Literacy Challenge</title>
   <style>
-    :root{--c1:#00D9FF;--c2:#FF00FF;--c3:#FFD700;--ok:#1dd75f;--bad:#ff4d57;--bg:#0a0430}
-    *{box-sizing:border-box} body{margin:0;font-family:Segoe UI,Tahoma,sans-serif;background:linear-gradient(135deg,#1a0033,#000428);color:#fff}
-    .wrap{max-width:920px;margin:0 auto;padding:24px}.card{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.15);border-radius:18px;padding:24px}
-    .hidden{display:none}.title{font-size:clamp(28px,6vw,56px);font-weight:900;text-align:center;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pulse 1.8s infinite}
-    .subtitle{text-align:center;color:var(--c3);font-weight:700;margin:8px 0 20px}.btn{cursor:pointer;border:none;padding:14px 20px;border-radius:999px;font-weight:800;background:linear-gradient(90deg,var(--c3),var(--c2));color:#111}
-    .hud{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.bar{flex:1;min-width:180px;height:12px;background:#1d1d3d;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));width:0}
-    .concept{color:var(--c3);font-weight:800}.script{min-height:84px;line-height:1.5;margin:12px 0;padding:12px;border-left:4px solid var(--c1);background:rgba(0,0,0,.25)}
-    .opts{display:grid;gap:10px}.opt{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:#120c3c;color:#fff;text-align:left;cursor:pointer}
-    .opt:disabled{opacity:.75;cursor:not-allowed}.opt.ok{background:rgba(29,215,95,.2);border-color:var(--ok)}.opt.bad{background:rgba(255,77,87,.2);border-color:var(--bad)}
-    .feedback{margin-top:12px;padding:12px;border-radius:10px;background:rgba(0,0,0,.3)}
-    @keyframes pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+    :root{--pink:#ff4fd8;--purple:#7b5bff;--blue:#42d9ff;--gold:#ffd54a;--green:#2ee66f;--red:#ff5067;--glass:rgba(255,255,255,.15)}
+    *{box-sizing:border-box} body{margin:0;font-family:'Fredoka',system-ui,sans-serif;color:#fff;min-height:100vh;background:radial-gradient(circle at 20% 20%,#c455ff 0,#7f3eff 30%,#3c2c9f 60%,#1a1748 100%);overflow-x:hidden}
+    .bgfx,.bgfx:before,.bgfx:after{position:fixed;inset:0;pointer-events:none}.bgfx:before,.bgfx:after{content:'';background-image:radial-gradient(circle,rgba(255,255,255,.5) 0 2px,transparent 2px);background-size:70px 70px;animation:float 24s linear infinite;opacity:.35}.bgfx:after{animation-duration:36s;transform:scale(1.2)}
+    @keyframes float{from{transform:translateY(0)}to{transform:translateY(-120px)}}
+    .wrap{max-width:980px;margin:0 auto;padding:18px}.card{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));border:2px solid rgba(255,255,255,.3);border-radius:24px;padding:22px;backdrop-filter:blur(8px);box-shadow:0 12px 40px rgba(20,0,60,.45)}
+    .hidden{display:none}.title{font-size:clamp(34px,7vw,62px);text-align:center;margin:0;background:linear-gradient(90deg,#ff6ee8,#ffd466,#5af9ff,#ff6ee8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:250% 100%;animation:rainbow 4s linear infinite,pulse 1.7s ease-in-out infinite;text-shadow:0 0 30px rgba(255,255,255,.35)}
+    @keyframes rainbow{to{background-position:250% 0}} @keyframes pulse{50%{filter:brightness(1.3)}}
+    .subtitle{text-align:center;color:#fff5a6}.btn{position:relative;border:none;padding:14px 24px;border-radius:999px;font:700 18px Fredoka;cursor:pointer;color:#41170e;background:linear-gradient(180deg,#fff4a8,#ffc84f);box-shadow:0 8px 0 #df9f2d,0 10px 20px rgba(0,0,0,.3);transition:.15s transform}
+    .btn:hover{transform:translateY(-2px) scale(1.03)} .btn:active{transform:translateY(4px) scale(.98);box-shadow:0 4px 0 #df9f2d}
+    .btn:before{content:'';position:absolute;left:14px;right:14px;top:6px;height:35%;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0))}
+    .hud{position:sticky;top:8px;z-index:9;display:grid;grid-template-columns:repeat(6,minmax(110px,1fr));gap:8px;margin-bottom:14px}
+    .chip{background:var(--glass);border:2px solid rgba(255,255,255,.32);border-radius:16px;padding:8px 10px;text-align:center}
+    .chip strong{display:block;font-size:1.25rem}.scale{animation:pop .3s ease} @keyframes pop{50%{transform:scale(1.25)}}
+    .levelbar{grid-column:1/-1;background:rgba(0,0,0,.24);padding:8px;border-radius:14px}.bar{height:14px;border-radius:999px;background:#32286f;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#4cf0ff,#ff7de8,#ffe563)}
+    .concept{margin:.5rem 0;color:#fff6b0;font-size:1.4rem}.script{min-height:80px;background:rgba(20,9,67,.45);border-left:5px solid #74dcff;border-radius:12px;padding:12px}
+    .opts{display:grid;gap:12px;margin-top:12px}.opt{border:2px solid #ffffff73;border-radius:18px;padding:14px;text-align:left;color:#fff;background:linear-gradient(150deg,#7249ff,#ac5cff);cursor:pointer;font:600 16px Fredoka;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+    .opt:hover{filter:brightness(1.15);box-shadow:0 0 18px #ff84ff9a} .opt.ok{background:linear-gradient(140deg,#34f98f,#15b760)} .opt.bad{background:linear-gradient(140deg,#ff8298,#ff4f6e);animation:shake .35s}
+    @keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-3px)}}
+    .feedback{margin-top:10px;padding:10px;border-radius:12px;background:rgba(7,5,35,.45)}
+    .float{position:fixed;z-index:15;font-weight:700;animation:up 1s ease forwards}@keyframes up{to{transform:translateY(-50px);opacity:0}}
+    .toast{position:fixed;right:10px;top:10px;background:#fff;color:#4b1f69;padding:10px 14px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.35);transform:translateX(120%);transition:.4s;z-index:20}.toast.show{transform:translateX(0)}
+    .overlay{position:fixed;inset:0;background:rgba(24,9,64,.88);display:flex;align-items:center;justify-content:center;z-index:30;text-align:center}.celebrate{font-size:clamp(28px,6vw,56px)}
+    .podium li{list-style:none;margin:8px 0;padding:8px;border-radius:10px;background:rgba(255,255,255,.13)}
   </style>
 </head>
 <body>
+<div class="bgfx"></div>
+<div class="toast" id="toast"></div>
 <div class="wrap">
   <section id="intro" class="card">
     <h1 class="title">A.I. LITERACY CHALLENGE</h1>
     <p class="subtitle">Prof. Dr. De Souza</p>
     <div style="text-align:center"><button class="btn" onclick="startGame()">Iniciar Desafio</button></div>
   </section>
-
   <section id="quiz" class="card hidden">
     <div class="hud">
-      <div id="levelLabel"></div><div>Pontos: <b id="score">0</b></div><div>❤️ <span id="lives">3</span></div>
-      <div class="bar"><div id="progress" class="fill"></div></div>
+      <div class="chip">💎<strong id="diamonds">0</strong></div>
+      <div class="chip">🪙<strong id="coins">0</strong></div>
+      <div class="chip">⭐<strong id="score">0</strong></div>
+      <div class="chip">❤️<strong id="lives">3</strong></div>
+      <div class="chip">🏷️<strong id="levelLabel">Nível 1</strong></div>
+      <div class="chip">Pergunta<strong id="qnum">1</strong></div>
+      <div class="levelbar"><div class="bar"><div id="progress" class="fill"></div></div></div>
     </div>
-    <h2 class="concept" id="concept"></h2>
-    <div class="script" id="script"></div>
-    <div class="opts" id="opts"></div>
-    <div id="feedback" class="feedback hidden"></div>
+    <h2 class="concept" id="concept"></h2><div class="script" id="script"></div><div class="opts" id="opts"></div><div id="feedback" class="feedback hidden"></div>
   </section>
-
-  <section id="between" class="card hidden" style="text-align:center">
-    <h2>🎉 Nível concluído!</h2>
-    <p>Pontuação atual: <b id="betweenScore"></b></p>
-    <button class="btn" onclick="nextLevel()">Próximo Nível →</button>
-  </section>
-
+  <section id="between" class="card hidden" style="text-align:center"><h2>🎉 Nível concluído!</h2><p>Pontuação atual: <b id="betweenScore"></b></p><button class="btn" onclick="nextLevel()">Próximo Nível →</button></section>
   <section id="end" class="card hidden" style="text-align:center">
-    <h2>Fim do desafio</h2>
-    <p>Pontuação final: <b id="final"></b>/14</p>
-    <p id="msg"></p>
+    <h2>Fim do desafio</h2><p>Pontuação final: <b id="final"></b>/14</p><p id="msg"></p>
+    <div><input id="playerName" placeholder="Seu nome" style="padding:10px;border-radius:10px;border:none" maxlength="20"><button class="btn" onclick="submitScore()">Salvar pontuação</button></div>
+    <h3>🌍 Leaderboard Global</h3><ul id="leaderboard" class="podium"></ul>
     <button class="btn" onclick="location.reload()">Jogar novamente</button>
   </section>
 </div>
@@ -60,17 +70,25 @@ const levels=[
  {nome:'Nível 2 — Aplicações',qs:Array.from({length:5}).map((_,i)=>({concept:`Aplicações ${i+1}`,script:'Trecho do roteiro (não fornecido nesta solicitação).',citation:'Roteiro-base',exp:'Questão de espaço reservada para o texto exato do roteiro.',options:['A) Opção A','B) Opção B','C) Opção C','D) Opção D'],correct:0}))},
  {nome:'Nível 3 — Domínio Avançado',qs:Array.from({length:4}).map((_,i)=>({concept:`Domínio ${i+1}`,script:'Trecho do roteiro (não fornecido nesta solicitação).',citation:'Roteiro-base',exp:'Questão de espaço reservada para o texto exato do roteiro.',options:['A) Opção A','B) Opção B','C) Opção C','D) Opção D'],correct:0}))}
 ];
-let li=0,qi=0,score=0,lives=3,typing=false;
-const total=14;
-function startGame(){intro.classList.add('hidden');quiz.classList.remove('hidden');render();}
-function typeText(el,text,done){el.textContent='';let i=0;typing=true;const t=setInterval(()=>{el.textContent+=text[i++]||'';if(i>text.length){clearInterval(t);typing=false;done&&done()}},18)}
-function render(){const q=levels[li].qs[qi];levelLabel.textContent=levels[li].nome;scoreEl=score;document.getElementById('score').textContent=score;document.getElementById('lives').textContent=lives;document.getElementById('progress').style.width=((li*5+qi+1)/total*100)+'%';concept.textContent=q.concept;feedback.classList.add('hidden');opts.innerHTML='';typeText(script,q.script,()=>q.options.forEach((op,idx)=>{const b=document.createElement('button');b.className='opt';b.textContent=op;b.onclick=()=>answer(idx,b);opts.appendChild(b)}));}
-function answer(idx,btn){if(typing)return;const q=levels[li].qs[qi];[...document.querySelectorAll('.opt')].forEach(b=>b.disabled=true);const ok=idx===q.correct;if(ok){btn.classList.add('ok');score++;}else{btn.classList.add('bad');lives--;document.querySelectorAll('.opt')[q.correct].classList.add('ok');}
+const workerURL='https://ai-literacy-leaderboard.YOUR-SUBDOMAIN.workers.dev';
+let li=0,qi=0,score=0,lives=3,typing=false,diamonds=0,coins=0,streak=0,noErrors=true;
+const total=14,audio=new (window.AudioContext||window.webkitAudioContext)();
+const tone=(f,t=.12,type='sine',when=0)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=f;g.gain.value=.0001;o.connect(g);g.connect(audio.destination);const now=audio.currentTime+when;g.gain.exponentialRampToValueAtTime(.2,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+t);o.start(now);o.stop(now+t+.02)};
+function sfx(kind){if(kind==='ok')[440,554,659].forEach((f,i)=>tone(f,.2,'triangle',i*.08));if(kind==='bad')tone(140,.35,'sawtooth');if(kind==='coin')[920,1100,1320].forEach((f,i)=>tone(f,.08,'square',i*.05));if(kind==='win')[523,659,784,1046].forEach((f,i)=>tone(f,.18,'triangle',i*.09));if(kind==='ach')[740,988,1318].forEach((f,i)=>tone(f,.1,'sine',i*.06));if(kind==='click')tone(460,.06,'sine');}
+function startGame(){sfx('click');intro.classList.add('hidden');quiz.classList.remove('hidden');render();}
+function typeText(el,text,done){el.textContent='';let i=0;typing=true;const t=setInterval(()=>{el.textContent+=text[i++]||'';if(i>text.length){clearInterval(t);typing=false;done&&done()}},13)}
+function pulse(id){const el=document.getElementById(id).parentElement;el.classList.remove('scale');void el.offsetWidth;el.classList.add('scale')}
+function floatText(txt){const d=document.createElement('div');d.className='float';d.textContent=txt;d.style.left='30px';d.style.top='80px';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
+function achievement(msg){toast.textContent=msg;toast.classList.add('show');sfx('ach');setTimeout(()=>toast.classList.remove('show'),1800)}
+function render(){const q=levels[li].qs[qi];levelLabel.textContent=`Nível ${li+1}`;qnum.textContent=`${qi+1}/${levels[li].qs.length}`;scoreEl=score;score.textContent=score;livesEl=lives;document.getElementById('lives').textContent=lives;diamondsEl.textContent=diamonds;coinsEl.textContent=coins;progress.style.width=((li*5+qi+1)/total*100)+'%';concept.textContent=q.concept;feedback.classList.add('hidden');opts.innerHTML='';typeText(script,q.script,()=>q.options.forEach((op,idx)=>{const b=document.createElement('button');b.className='opt';b.textContent=op;b.onclick=()=>answer(idx,b);opts.appendChild(b)}));}
+function celebrate(){const o=document.createElement('div');o.className='overlay';o.innerHTML='<div><div class="celebrate">NÍVEL COMPLETO! ⭐⭐⭐</div><p>Parabéns!</p></div>';document.body.appendChild(o);sfx('win');setTimeout(()=>o.remove(),1400)}
+function answer(idx,btn){if(typing)return;sfx('click');const q=levels[li].qs[qi];[...document.querySelectorAll('.opt')].forEach(b=>b.disabled=true);const ok=idx===q.correct;if(ok){btn.classList.add('ok');score++;diamonds+=2;coins+=5;streak++;sfx('ok');sfx('coin');floatText('+💎2 +🪙5');['score','diamonds','coins'].forEach(pulse);if(score===1)achievement('Primeira Resposta Certa! 🎉');if(streak===3)achievement('Sequência de 3! 🔥');}else{btn.classList.add('bad');lives--;streak=0;noErrors=false;sfx('bad');pulse('lives');document.querySelectorAll('.opt')[q.correct].classList.add('ok');}
 feedback.classList.remove('hidden');feedback.innerHTML=`<b>${ok?'✅ Correto':'❌ Incorreto'}</b><br><small>Fonte: ${q.citation}</small><br>${q.exp}`;
-setTimeout(()=>{if(lives<=0)return end();qi++;if(qi>=levels[li].qs.length){if(li<2){quiz.classList.add('hidden');between.classList.remove('hidden');betweenScore.textContent=score;}else end();}else render();},1200)}
-function nextLevel(){between.classList.add('hidden');quiz.classList.remove('hidden');li++;qi=0;render();}
-function end(){quiz.classList.add('hidden');between.classList.add('hidden');endSec=document.getElementById('end');endSec.classList.remove('hidden');document.getElementById('final').textContent=score;document.getElementById('msg').textContent=score>=12?'Excelente! Você domina a IA educacional.':score>=8?'Muito bem! Continue desenvolvendo seu letramento.':'Continue estudando — a jornada é sua maior conquista.';}
-const intro=document.getElementById('intro'),quiz=document.getElementById('quiz'),between=document.getElementById('between'),script=document.getElementById('script'),opts=document.getElementById('opts'),concept=document.getElementById('concept'),feedback=document.getElementById('feedback'),levelLabel=document.getElementById('levelLabel'),betweenScore=document.getElementById('betweenScore');
+setTimeout(()=>{if(lives<=0)return end();qi++;if(qi>=levels[li].qs.length){if(li<2){if(noErrors)achievement('Sem Erros! 💫');achievement('Mestre do Nível! 👑');celebrate();quiz.classList.add('hidden');between.classList.remove('hidden');betweenScore.textContent=score;}else end();}else render();},1200)}
+function nextLevel(){sfx('click');between.classList.add('hidden');quiz.classList.remove('hidden');li++;qi=0;render();}
+async function loadLeaderboard(){let data=[];try{const r=await fetch(workerURL+'/leaderboard');if(!r.ok)throw 0;data=(await r.json()).scores||[]}catch{data=JSON.parse(localStorage.getItem('aiLeader')||'[]').sort((a,b)=>b.score-a.score).slice(0,10)}leaderboard.innerHTML=data.map((s,i)=>`<li>${i===0?'👑':i===1?'🥈':i===2?'🥉':'🎖️'} ${i+1}. ${s.name} — ${s.score} pts (N${s.level})</li>`).join('')||'<li>Sem pontuações ainda.</li>'}
+async function submitScore(){const name=(playerName.value||'Anônimo').trim().slice(0,20);const entry={name,score,level:li+1,timestamp:new Date().toISOString()};try{await fetch(workerURL+'/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(entry)});}catch{const arr=JSON.parse(localStorage.getItem('aiLeader')||'[]');arr.push(entry);localStorage.setItem('aiLeader',JSON.stringify(arr));}loadLeaderboard()}
+function end(){quiz.classList.add('hidden');between.classList.add('hidden');endSec.classList.remove('hidden');final.textContent=score;msg.textContent=score>=12?'Excelente! Você domina a IA educacional.':score>=8?'Muito bem! Continue desenvolvendo seu letramento.':'Continue estudando — a jornada é sua maior conquista.';loadLeaderboard();}
+const intro=document.getElementById('intro'),quiz=document.getElementById('quiz'),between=document.getElementById('between'),script=document.getElementById('script'),opts=document.getElementById('opts'),concept=document.getElementById('concept'),feedback=document.getElementById('feedback'),betweenScore=document.getElementById('betweenScore'),toast=document.getElementById('toast'),progress=document.getElementById('progress'),endSec=document.getElementById('end');
 </script>
-</body>
-</html>
+</body></html>
