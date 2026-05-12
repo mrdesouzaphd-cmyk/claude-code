@@ -162,10 +162,12 @@
     const cards = document.getElementById('cards');
     const nav = document.getElementById('top-nav');
 
+    let navHtml = '';
+    let cardsHtml = '';
     scenes.forEach((scene, idx) => {
       const id = `scene-${idx + 1}`;
-      nav.insertAdjacentHTML('beforeend', `<a href="#${id}">${idx + 1}</a>`);
-      cards.insertAdjacentHTML('beforeend', `
+      navHtml += `<a href="#${id}" aria-label="Ir para Cena ${idx + 1}">${idx + 1}</a>`;
+      cardsHtml += `
         <article class="card" id="${id}">
           <div class="top">
             <span class="scene-badge">Scene ${idx + 1}</span>
@@ -175,8 +177,10 @@
           <p class="script">${scene.text}</p>
           <div class="actions"><button type="button" data-copy="${idx}">Copiar roteiro</button></div>
         </article>
-      `);
+      `;
     });
+    nav.innerHTML = navHtml;
+    cards.innerHTML = cardsHtml;
 
     document.addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-copy]');
@@ -189,7 +193,19 @@
         btn.textContent = 'Copiado!';
         setTimeout(() => (btn.textContent = original), 1400);
       } catch {
-        btn.textContent = 'Falha ao copiar';
+        try {
+          const textarea = document.createElement('textarea');
+          textarea.value = payload;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          const original = btn.textContent;
+          btn.textContent = 'Copiado!';
+          setTimeout(() => (btn.textContent = original), 1400);
+        } catch {
+          btn.textContent = 'Falha ao copiar';
+        }
       }
     });
   </script>
