@@ -29,6 +29,20 @@
     .toast{position:fixed;right:10px;top:10px;background:#fff;color:#4b1f69;padding:10px 14px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.35);transform:translateX(120%);transition:.4s;z-index:20}.toast.show{transform:translateX(0)}
     .overlay{position:fixed;inset:0;background:rgba(24,9,64,.88);display:flex;align-items:center;justify-content:center;z-index:30;text-align:center}.celebrate{font-size:clamp(28px,6vw,56px)}
     .podium li{list-style:none;margin:8px 0;padding:8px;border-radius:10px;background:rgba(255,255,255,.13)}
+  
+    .hud-controls{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+    .mini-btn{border:none;border-radius:999px;padding:8px 12px;font:700 14px Fredoka;cursor:pointer;background:linear-gradient(180deg,#dff7ff,#8fd6ff);color:#1f2459;box-shadow:0 4px 0 #58a9d4;transition:transform .2s}
+    .mini-btn:hover{transform:translateY(-1px)} .mini-btn:active,.mini-btn.bounce{animation:bounce .35s}
+    @keyframes bounce{30%{transform:scale(1.08)}60%{transform:scale(.96)}}
+    .quiz-content{transition:opacity .35s,transform .35s}.quiz-content.fade{opacity:0;transform:translateY(8px)}
+    .confetti,.sparkle{position:fixed;pointer-events:none;z-index:25;animation:fall 1.6s linear forwards}
+    .sparkle{font-size:20px;animation:twinkle 1.2s ease-out forwards}
+    @keyframes fall{to{transform:translateY(120px) rotate(420deg);opacity:0}}
+    @keyframes twinkle{to{transform:translateY(-60px) scale(.2);opacity:0}}
+    .high-contrast{background:#000!important;color:#fff!important}
+    .high-contrast .card{background:#000;border-color:#fff}
+    .high-contrast .opt{background:#111;border-color:#fff}
+
   </style>
 </head>
 <body>
@@ -49,8 +63,15 @@
       <div class="chip">🏷️<strong id="levelLabel">Nível 1</strong></div>
       <div class="chip">Pergunta<strong id="qnum">1</strong></div>
       <div class="levelbar"><div class="bar"><div id="progress" class="fill"></div></div></div>
+      <div class="hud-controls">
+        <button class="mini-btn" id="musicToggle" onclick="toggleMusic()">🔊 Música</button>
+        <button class="mini-btn" id="readBtn" onclick="readQuestion()">🔊 Ler pergunta</button>
+        <button class="mini-btn" onclick="adjustFont(1)">A+</button>
+        <button class="mini-btn" onclick="adjustFont(-1)">A-</button>
+        <button class="mini-btn" id="contrastBtn" onclick="toggleContrast()">◐ Contraste</button>
+      </div>
     </div>
-    <h2 class="concept" id="concept"></h2><div class="script" id="script"></div><div class="opts" id="opts"></div><div id="feedback" class="feedback hidden"></div>
+    <div id="quizContent" class="quiz-content"><h2 class="concept" id="concept"></h2><div class="script" id="script"></div><div class="opts" id="opts"></div><div id="feedback" class="feedback hidden"></div></div>
   </section>
   <section id="between" class="card hidden" style="text-align:center"><h2>🎉 Nível concluído!</h2><p>Pontuação atual: <b id="betweenScore"></b></p><button class="btn" onclick="nextLevel()">Próximo Nível →</button></section>
   <section id="end" class="card hidden" style="text-align:center">
@@ -73,22 +94,33 @@ const levels=[
 const workerURL='https://ai-literacy-leaderboard.mrdesouzaphd.workers.dev';
 let li=0,qi=0,score=0,lives=3,typing=false,diamonds=0,coins=0,streak=0,noErrors=true;
 const total=14,audio=new (window.AudioContext||window.webkitAudioContext)();
+let fontScale=1,musicOn=true,contrastOn=false,currentQuestion=null;
+const musicGain=audio.createGain();musicGain.gain.value=.05;musicGain.connect(audio.destination);
+function ambientPad(){if(!musicOn)return;const prog=[[261.63,329.63,392],[293.66,369.99,440],[329.63,415.3,493.88],[246.94,311.13,392]];prog.forEach((ch,step)=>ch.forEach(f=>{const o=audio.createOscillator(),g=audio.createGain();o.type='triangle';o.frequency.value=f;o.connect(g);g.connect(musicGain);const t=audio.currentTime+step*1.4;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.04,t+.6);g.gain.linearRampToValueAtTime(.0001,t+1.35);o.start(t);o.stop(t+1.4)}));setTimeout(ambientPad,5600)}
 const tone=(f,t=.12,type='sine',when=0)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=f;g.gain.value=.0001;o.connect(g);g.connect(audio.destination);const now=audio.currentTime+when;g.gain.exponentialRampToValueAtTime(.2,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+t);o.start(now);o.stop(now+t+.02)};
 function sfx(kind){if(kind==='ok')[440,554,659].forEach((f,i)=>tone(f,.2,'triangle',i*.08));if(kind==='bad')tone(140,.35,'sawtooth');if(kind==='coin')[920,1100,1320].forEach((f,i)=>tone(f,.08,'square',i*.05));if(kind==='win')[523,659,784,1046].forEach((f,i)=>tone(f,.18,'triangle',i*.09));if(kind==='ach')[740,988,1318].forEach((f,i)=>tone(f,.1,'sine',i*.06));if(kind==='click')tone(460,.06,'sine');}
-function startGame(){if(audio.state==='suspended')audio.resume();sfx('click');intro.classList.add('hidden');quiz.classList.remove('hidden');render();}
+function startGame(){if(audio.state==='suspended')audio.resume();if(musicOn)ambientPad();sfx('click');intro.classList.add('hidden');quiz.classList.remove('hidden');render();}
 function typeText(el,text,done){el.textContent='';let i=0;typing=true;const t=setInterval(()=>{el.textContent+=text[i++]||'';if(i>text.length){clearInterval(t);typing=false;done&&done()}},13)}
 function pulse(id){const el=document.getElementById(id).parentElement;el.classList.remove('scale');void el.offsetWidth;el.classList.add('scale')}
 function floatText(txt){const d=document.createElement('div');d.className='float';d.textContent=txt;d.style.left='30px';d.style.top='80px';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
 function achievement(msg){toast.textContent=msg;toast.classList.add('show');sfx('ach');setTimeout(()=>toast.classList.remove('show'),1800)}
-function render(){const q=levels[li].qs[qi];levelLabel.textContent=`Nível ${li+1}`;qnum.textContent=`${qi+1}/${levels[li].qs.length}`;document.getElementById('score').textContent=score;document.getElementById('lives').textContent=lives;document.getElementById('diamonds').textContent=diamonds;document.getElementById('coins').textContent=coins;progress.style.width=((li*5+qi+1)/total*100)+'%';concept.textContent=q.concept;feedback.classList.add('hidden');opts.innerHTML='';typeText(script,q.script,()=>q.options.forEach((op,idx)=>{const b=document.createElement('button');b.className='opt';b.textContent=op;b.onclick=()=>answer(idx,b);opts.appendChild(b)}));}
-function celebrate(){const o=document.createElement('div');o.className='overlay';o.innerHTML='<div><div class="celebrate">NÍVEL COMPLETO! ⭐⭐⭐</div><p>Parabéns!</p></div>';document.body.appendChild(o);sfx('win');setTimeout(()=>o.remove(),1400)}
-function answer(idx,btn){if(typing)return;sfx('click');const q=levels[li].qs[qi];[...document.querySelectorAll('.opt')].forEach(b=>b.disabled=true);const ok=idx===q.correct;if(ok){btn.classList.add('ok');score++;diamonds+=2;coins+=5;streak++;sfx('ok');sfx('coin');floatText('+💎2 +🪙5');['score','diamonds','coins'].forEach(pulse);if(score===1)achievement('Primeira Resposta Certa! 🎉');if(streak===3)achievement('Sequência de 3! 🔥');}else{btn.classList.add('bad');lives--;streak=0;noErrors=false;sfx('bad');pulse('lives');document.querySelectorAll('.opt')[q.correct].classList.add('ok');}
+function render(){quizContent.classList.add('fade');setTimeout(()=>quizContent.classList.remove('fade'),40);const q=levels[li].qs[qi];currentQuestion=q;levelLabel.textContent=`Nível ${li+1}`;qnum.textContent=`${qi+1}/${levels[li].qs.length}`;document.getElementById('score').textContent=score;document.getElementById('lives').textContent=lives;document.getElementById('diamonds').textContent=diamonds;document.getElementById('coins').textContent=coins;progress.style.width=((li*5+qi+1)/total*100)+'%';concept.textContent=q.concept;feedback.classList.add('hidden');opts.innerHTML='';typeText(script,q.script,()=>q.options.forEach((op,idx)=>{const b=document.createElement('button');b.className='opt';b.textContent=op;b.onclick=()=>answer(idx,b);opts.appendChild(b)}));}
+function celebrate(){const o=document.createElement('div');o.className='overlay';o.innerHTML='<div><div class="celebrate">NÍVEL COMPLETO! ⭐⭐⭐</div><p>Parabéns!</p></div>';document.body.appendChild(o);victorySparkles();sfx('win');setTimeout(()=>o.remove(),1400)}
+function answer(idx,btn){if(typing)return;sfx('click');const q=levels[li].qs[qi];[...document.querySelectorAll('.opt')].forEach(b=>b.disabled=true);const ok=idx===q.correct;if(ok){btn.classList.add('ok');score++;diamonds+=2;coins+=5;streak++;sfx('ok');sfx('coin');confettiBurst(22);floatText('+💎2 +🪙5');['score','diamonds','coins'].forEach(pulse);if(score===1)achievement('Primeira Resposta Certa! 🎉');if(streak===3)achievement('Sequência de 3! 🔥');}else{btn.classList.add('bad');lives--;streak=0;noErrors=false;sfx('bad');pulse('lives');document.querySelectorAll('.opt')[q.correct].classList.add('ok');}
 feedback.classList.remove('hidden');feedback.innerHTML=`<b>${ok?'✅ Correto':'❌ Incorreto'}</b><br><small>Fonte: ${q.citation}</small><br>${q.exp}`;
 setTimeout(()=>{if(lives<=0)return end();qi++;if(qi>=levels[li].qs.length){if(li<2){if(noErrors)achievement('Sem Erros! 💫');achievement('Mestre do Nível! 👑');celebrate();quiz.classList.add('hidden');between.classList.remove('hidden');betweenScore.textContent=score;}else end();}else render();},1200)}
 function nextLevel(){sfx('click');between.classList.add('hidden');quiz.classList.remove('hidden');li++;qi=0;render();}
 async function loadLeaderboard(){let data=[];try{const r=await fetch(workerURL+'/leaderboard');if(!r.ok)throw 0;data=(await r.json()).scores||[]}catch{data=JSON.parse(localStorage.getItem('aiLeader')||'[]').sort((a,b)=>b.score-a.score).slice(0,10)}leaderboard.innerHTML=data.map((s,i)=>`<li>${i===0?'👑':i===1?'🥈':i===2?'🥉':'🎖️'} ${i+1}. ${s.name} — ${s.score} pts (N${s.level})</li>`).join('')||'<li>Sem pontuações ainda.</li>'}
 async function submitScore(){const name=(playerName.value||'Anônimo').trim().slice(0,20);const entry={name,score,level:li+1,timestamp:new Date().toISOString()};try{await fetch(workerURL+'/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(entry)});}catch{const arr=JSON.parse(localStorage.getItem('aiLeader')||'[]');arr.push(entry);localStorage.setItem('aiLeader',JSON.stringify(arr));}loadLeaderboard()}
 function end(){quiz.classList.add('hidden');between.classList.add('hidden');endSec.classList.remove('hidden');final.textContent=score;msg.textContent=score>=12?'Excelente! Você domina a IA educacional.':score>=8?'Muito bem! Continue desenvolvendo seu letramento.':'Continue estudando — a jornada é sua maior conquista.';loadLeaderboard();}
-const intro=document.getElementById('intro'),quiz=document.getElementById('quiz'),between=document.getElementById('between'),script=document.getElementById('script'),opts=document.getElementById('opts'),concept=document.getElementById('concept'),feedback=document.getElementById('feedback'),betweenScore=document.getElementById('betweenScore'),toast=document.getElementById('toast'),progress=document.getElementById('progress'),endSec=document.getElementById('end');
+
+function confettiBurst(n=16){for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.textContent=['✨','🎉','💖','⭐'][Math.floor(Math.random()*4)];c.style.left=(20+Math.random()*60)+'vw';c.style.top=(40+Math.random()*20)+'vh';c.style.fontSize=(12+Math.random()*18)+'px';document.body.appendChild(c);setTimeout(()=>c.remove(),1600)}}
+function victorySparkles(){for(let i=0;i<28;i++){const s=document.createElement('div');s.className='sparkle';s.textContent='✨';s.style.left=(10+Math.random()*80)+'vw';s.style.top=(20+Math.random()*50)+'vh';document.body.appendChild(s);setTimeout(()=>s.remove(),1200)}}
+function toggleMusic(){musicOn=!musicOn;musicToggle.textContent=musicOn?'🔊 Música':'🔇 Música';if(!musicOn)musicGain.gain.value=0;else{musicGain.gain.value=.05;ambientPad();}}
+function readQuestion(){if(!('speechSynthesis' in window)||!currentQuestion)return;const u=new SpeechSynthesisUtterance(`${currentQuestion.concept}. ${currentQuestion.script}. Opções: ${currentQuestion.options.join('. ')}`);u.lang='pt-BR';speechSynthesis.cancel();speechSynthesis.speak(u);}
+function adjustFont(delta){fontScale=Math.min(1.5,Math.max(.85,fontScale+delta*0.08));document.documentElement.style.fontSize=(fontScale*100)+'%';}
+function toggleContrast(){contrastOn=!contrastOn;document.body.classList.toggle('high-contrast',contrastOn);contrastBtn.textContent=contrastOn?'◑ Contraste alto':'◐ Contraste';}
+
+const intro=document.getElementById('intro'),quiz=document.getElementById('quiz'),between=document.getElementById('between'),script=document.getElementById('script'),opts=document.getElementById('opts'),concept=document.getElementById('concept'),feedback=document.getElementById('feedback'),betweenScore=document.getElementById('betweenScore'),toast=document.getElementById('toast'),progress=document.getElementById('progress'),endSec=document.getElementById('end'),quizContent=document.getElementById('quizContent'),musicToggle=document.getElementById('musicToggle'),contrastBtn=document.getElementById('contrastBtn');
 </script>
 </body></html>
