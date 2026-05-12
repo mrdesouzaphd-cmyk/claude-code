@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A.I. Literacy Challenge — Roteiro Completo</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --purple: #4A1B96;
+      --cyan: #05C9D5;
+      --pink: #E410BC;
+      --cream: #FFFEF2;
+      --blue: #2b75ff;
+      --gray: #666b78;
+      --card: #12121d;
+      --border: #23233a;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 10%, rgba(74,27,150,.35), transparent 34%),
+                  radial-gradient(circle at 80% 0%, rgba(5,201,213,.20), transparent 30%),
+                  var(--bg);
+      color: var(--cream);
+      line-height: 1.6;
+    }
+    .container { width: min(1100px, 92vw); margin: 0 auto; }
+    header {
+      padding: 2.4rem 0 1.5rem;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(10,10,15,.95), rgba(10,10,15,.75));
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 4.2vw, 3rem);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--cyan), var(--pink), var(--cream));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 4s linear infinite;
+      background-size: 200% auto;
+    }
+    @keyframes shimmer { to { background-position: 200% center; } }
+    .subtitle { margin-top: .25rem; color: #cabcf3; font-weight: 600; }
+    nav { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: .45rem; }
+    nav a {
+      color: var(--cream); text-decoration: none; font-size: .82rem;
+      background: #181828; border: 1px solid #2b2b46; border-radius: 999px;
+      padding: .36rem .62rem;
+    }
+    nav a:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    main { padding: 1.5rem 0 3rem; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.02), transparent), var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1rem 1.15rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,.24);
+    }
+    .top { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+    .scene-badge {
+      background: var(--purple);
+      border: 1px solid #7f55ca;
+      color: white;
+      border-radius: 999px;
+      padding: .2rem .65rem;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    h2 { margin: 0; color: var(--cyan); font-size: 1.05rem; letter-spacing: .01em; }
+    .citation {
+      margin-left: auto;
+      border-radius: 999px;
+      padding: .22rem .55rem;
+      font-size: .75rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .cob { background: rgba(74,27,150,.35); border-color: #7f55ca; }
+    .scias { background: rgba(43,117,255,.30); border-color: #72a2ff; }
+    .peer { background: rgba(228,16,188,.30); border-color: #ff65e2; }
+    .geral { background: rgba(110,116,130,.30); border-color: #8f97a9; }
+    .script { margin: .8rem 0 1rem; color: #f1eedf; }
+    .actions { display: flex; justify-content: flex-end; }
+    button {
+      background: transparent;
+      border: 1px solid #4f5370;
+      color: var(--cream);
+      border-radius: 10px;
+      padding: .4rem .7rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { border-color: var(--cyan); color: var(--cyan); }
+    .refs {
+      margin-top: 2rem;
+      background: #111120;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+    .refs h3 { margin-top: 0; color: var(--pink); }
+    .refs li { margin-bottom: .55rem; }
+    @media (min-width: 860px) {
+      .card { padding: 1.2rem 1.25rem; }
+      h2 { font-size: 1.2rem; }
+      .script { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>A.I. LITERACY CHALLENGE</h1>
+      <div class="subtitle">Roteiro Completo — Prof. Dr. De Souza</div>
+      <nav id="top-nav"></nav>
+    </div>
+  </header>
+  <main class="container">
+    <section id="cards" class="grid"></section>
+    <section class="refs" id="references">
+      <h3>Referências</h3>
+      <ol>
+        <li>De Souza, Ricieri, Barreto, Farias (2023). Simulação de Diálogos e Personagens no Chat-GPT4. IV CoBICET.</li>
+        <li>Ricieri, Farias, Barreto, De Souza (2024). Erros Comuns de Docentes sem Letramento em IA. Peer Review.</li>
+        <li>Ricieri, De Souza, Barreto, Farias (2024). PROMPT-EDU: Roteiro de Comandos de Ajuste Fino para ChatGPT. SCIAS.</li>
+        <li>Ricieri, Barreto, De Souza, Farias (2023). Rotina AUDI-GPTedu. IV CoBICET.</li>
+      </ol>
+    </section>
+  </main>
+  <script>
+    const scenes = [
+      {title:"INTRODUÇÃO",cite:"Conhecimento Geral em IA",cls:"geral",text:"\"Olá! Sou o Professor Doutor De Souza. Vamos explorar os conceitos fundamentais da literacia em Inteligência Artificial.\""},
+      {title:"LLM",cite:"CoBICET 2023",cls:"cob",text:"\"Um Large Language Model — o modelo ampliado da linguagem — não armazena verdades. Ele modela a probabilidade das sequências linguísticas. Os pesquisadores Doutor De Souza, Doutora Rissieri, Doutora Ba-rre-to e Doutora FARIAS, no CoBICET em 2023, explicam que a rede neural Transformer é a pedra angular sobre a qual os LLMs foram construídos.\""},
+      {title:"REDES NEURAIS",cite:"CoBICET 2023",cls:"cob",text:"\"As redes neurais aprendem por camadas. Cada camada reconhece padrões mais complexos — ligando significados entre palavras-chave, conceitos e contextos. Os pesquisadores Doutor De Souza, Doutora Rissieri, Doutora Ba-rre-to e Doutora FARIAS, no CoBICET em 2023, mostram que a capacidade da IA em generalizar conhecimento se desenvolve por essas conexões construídas em camadas.\""},
+      {title:"ALGORITMO",cite:"CoBICET 2023",cls:"cob",text:"\"Um algoritmo em IA Generativa é a sequência lógica que organiza o processamento: entrada, transformação e saída. Os pesquisadores Doutor De Souza, Doutora Rissieri, Doutora Ba-rre-to e Doutora FARIAS no CoBICET em 2023, mostram que prompts estruturados são vitais para orientar essa sequência e aprimorar a capacidade dos modelos em performar com precisão.\""},
+      {title:"CIÊNCIA DOS PROMPTS",cite:"CoBICET 2023",cls:"cob",text:"\"Na Ciência dos Prompts, um prompt não é uma pergunta qualquer. É a configuração científica das variáveis do experimento. Doutora Rissieri, Doutora Ba-rre-to, Doutor De Souza e Doutora FARIAS, no CoBICET em 2023, definem a estrutura em três elementos: finalidade da tarefa, contexto da aplicação e chave do comando específica. Essa é a base do método Prompt-EDU.\""},
+      {title:"ALUCINAÇÃO",cite:"Peer Review 2024",cls:"peer",text:"\"Alucinação em IA não é mentira intencional. É a geração das respostas falsas com aparência da verdade — um ruído epistêmico sem ancoragem factual. Doutora Rissieri, Doutora FARIAS, Doutora Ba-rre-to e Doutor De Souza, na Peer Review em 2024, mostram que esse fenômeno exige que o docente atue como filtro da veracidade.\""},
+      {title:"TOKEN",cite:"Conhecimento Geral em IA",cls:"geral",text:"\"Um token é a unidade fundamental do processamento nos modelos ampliados da linguagem — equivale a aproximadamente zero vírgula setenta e cinco palavras. Todos os custos, limites e velocidades dos modelos são medidos em tokens. Compreender essa arquitetura é essencial para o letramento docente em IA.\""},
+      {title:"CONTEXT WINDOW",cite:"Conhecimento Geral em IA",cls:"geral",text:"\"A Context Window é a memória de curto prazo dos modelos ampliados da linguagem — o volume total do texto que o modelo processa simultaneamente — essencial para manter a coerência das respostas da IA em tarefas longas e complexas.\""},
+      {title:"RAG",cite:"CoBICET 2023",cls:"cob",text:"\"RAG — Retrieval Augmented Generation — é o método para ancorar a IA em documentos específicos antes da resposta. A IA consulta primeiro o documento escolhido. Doutora Rissieri, Doutora Ba-rre-to, Doutor De Souza e Doutora FARIAS, no CoBICET em 2023, aplicaram exatamente esse método ao conectar arquivos PDF diretamente ao ChatGPT4 para auditoria acadêmica.\""},
+      {title:"CHAIN-OF-THOUGHT",cite:"SCIAS 2024",cls:"scias",text:"\"Chain-of-Thought — ou Cadeia dos Pensamentos — é a técnica pela qual a IA mostra o raciocínio passo a passo. Os pesquisadores Doutora Rissieri, Doutora FARIAS, Doutor De Souza e Doutora Ba-rre-to, na revista SCIAS em 2024, demonstram que essa abordagem aplica sequências estruturadas nos prompts, conduzindo o modelo a processar informações sequencialmente antes da conclusão.\""},
+      {title:"TEMPERATURE",cite:"Conhecimento Geral em IA",cls:"geral",text:"\"Temperature é o hiperparâmetro que controla a aleatoriedade das respostas. Temperature baixa produz respostas factuais e determinísticas. Temperature alta produz respostas criativas e variadas. O ajuste fino dos parâmetros é essencial para alcançar o desempenho adequado a cada objetivo pedagógico.\""},
+      {title:"AGÊNCIA EPISTÊMICA",cite:"Peer Review 2024",cls:"peer",text:"\"Agência Epistêmica é sua responsabilidade humana fundamental: verificar, validar e questionar o que a IA produz. Doutora Rissieri, Doutora FARIAS, Doutora Ba-rre-to e Doutor De Souza, na Peer Review em 2024, mostram que esse fenômeno exige que o docente atue como filtro da veracidade. Essa competência não pode ser terceirizada ao modelo.\""},
+      {title:"MÉTODO SANDUÍCHE",cite:"CoBICET 2023",cls:"cob",text:"\"O Método Sanduíche organiza o workflow fundamental da IA educacional: o humano orienta, a IA processa e o humano valida. No CoBICET, em 2023, a Doutora Rissieri, a Doutora Ba-rre-to, o Doutor De Souza e a Doutora FARIAS demonstraram esse princípio na Rotina AUDI-GPTedu.\""},
+      {title:"CIÊNCIAS DO ARTIFICIAL",cite:"CoBICET 2023",cls:"cob",text:"\"A partir da tradição de Herbert A. Simon, especialmente em The Sciences of the Artificial, a inteligência artificial pode ser compreendida como parte das ciências do artificial: o estudo e o projeto de sistemas orientados a funções, objetivos e adaptação. Nesse sentido, os pesquisadores Doutor De Souza, Doutora Rissieri, Doutora Ba-rre-to e Doutora FARIAS, no CoBICET em 2023, defenderam que o uso qualificado da IA na educação exige compreensão de sua arquitetura técnica e pedagógica.\""},
+      {title:"IA PREDITIVA vs. GENERATIVA",cite:"Peer Review 2024",cls:"peer",text:"\"A IA Preditiva funciona como um Oráculo — analisa padrões existentes para prever, classificar e recomendar. A IA Generativa funciona como um Artista — cria conteúdo novo que ainda não existia. Doutora Rissieri, Doutora FARIAS, Doutora Ba-rre-to e Doutor De Souza, na Peer Review em 2024, mostram que compreender essa distinção é fundamental para o letramento docente na Era da Inteligência Artificial.\""}
+    ];
+
+    const cards = document.getElementById('cards');
+    const nav = document.getElementById('top-nav');
+
+    scenes.forEach((scene, idx) => {
+      const id = `scene-${idx + 1}`;
+      nav.insertAdjacentHTML('beforeend', `<a href="#${id}">${idx + 1}</a>`);
+      cards.insertAdjacentHTML('beforeend', `
+        <article class="card" id="${id}">
+          <div class="top">
+            <span class="scene-badge">Scene ${idx + 1}</span>
+            <h2>${scene.title}</h2>
+            <span class="citation ${scene.cls}">${scene.cite}</span>
+          </div>
+          <p class="script">${scene.text}</p>
+          <div class="actions"><button type="button" data-copy="${idx}">Copiar roteiro</button></div>
+        </article>
+      `);
+    });
+
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-copy]');
+      if (!btn) return;
+      const i = Number(btn.dataset.copy);
+      const payload = `Scene ${i + 1} — ${scenes[i].title} [${scenes[i].cite}]\n${scenes[i].text}`;
+      try {
+        await navigator.clipboard.writeText(payload);
+        const original = btn.textContent;
+        btn.textContent = 'Copiado!';
+        setTimeout(() => (btn.textContent = original), 1400);
+      } catch {
+        btn.textContent = 'Falha ao copiar';
+      }
+    });
+  </script>
+</body>
+</html>
