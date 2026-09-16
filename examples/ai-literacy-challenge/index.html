@@ -956,25 +956,25 @@
     <div class="container">
         <div class="header">
             <div class="logo-text">DR.DE.SOUZ.AI</div>
-            <div class="subtitle">🎓 AI Literacy Challenge</div>
+            <div class="subtitle" id="headerSubtitle">🎓 AI Literacy Challenge</div>
         </div>
 
         <!-- Welcome Screen -->
         <div class="welcome-screen" id="welcomeScreen">
-            <h2>🌍 Desafio AI Literacy</h2>
-            <p style="color: #FFD700; font-size: clamp(16px, 4vw, 20px); margin: 20px 0; line-height: 1.6; font-weight: bold;">
+            <h2 id="welcomeTitle">🌍 Desafio AI Literacy</h2>
+            <p id="welcomeDesc" style="color: #FFD700; font-size: clamp(16px, 4vw, 20px); margin: 20px 0; line-height: 1.6; font-weight: bold;">
                 Aprenda IA em 3 níveis progressivos! 🚀
             </p>
             <div class="player-count">
-                🌟 <span id="totalPlayers">0</span> jogadores mundialmente
+                🌟 <span id="totalPlayers">0</span> <span id="playersText">jogadores mundialmente</span>
             </div>
             <div style="margin: 30px 0; font-size: clamp(14px, 3vw, 18px);">
-                <p style="color: #00ff00; font-weight: bold; margin: 10px 0;">🟢 Nível 1: Fundação (Literacy)</p>
-                <p style="color: #FFD700; font-weight: bold; margin: 10px 0;">🟡 Nível 2: Competência (Skills)</p>
-                <p style="color: #ff0000; font-weight: bold; margin: 10px 0;">🔴 Nível 3: Maestria (Science)</p>
+                <p id="level1Info" style="color: #00ff00; font-weight: bold; margin: 10px 0;">🟢 Nível 1: Fundação (Literacy)</p>
+                <p id="level2Info" style="color: #FFD700; font-weight: bold; margin: 10px 0;">🟡 Nível 2: Competência (Skills)</p>
+                <p id="level3Info" style="color: #ff0000; font-weight: bold; margin: 10px 0;">🔴 Nível 3: Maestria (Science)</p>
             </div>
             <input type="text" id="playerName" placeholder="✨ Digite seu nome">
-            <button class="start-btn" onclick="enterLevels()">🚀 Começar!</button>
+            <button class="start-btn" onclick="enterLevels()" id="startButton">🚀 Começar!</button>
         </div>
 
         <!-- Level Selection Screen -->
@@ -983,22 +983,22 @@
                 <!-- Level 1: Foundation -->
                 <div class="level-card beginner" onclick="startLevel(1)">
                     <div class="level-icon">🟢</div>
-                    <div class="level-title">Nível 1: Fundação</div>
-                    <div class="level-description">
+                    <div class="level-title" id="levelTitle1">Nível 1: Fundação</div>
+                    <div class="level-description" id="levelDesc1">
                         Entenda o básico: O que é IA? GenAI vs Predictive AI. Neural Networks e conceitos fundamentais.
                     </div>
                     <div class="level-stats">
                         <div class="level-stat">
                             <div class="level-stat-value">5</div>
-                            <div class="level-stat-label">Questões</div>
+                            <div class="level-stat-label" id="questionsLabel1">Questões</div>
                         </div>
                         <div class="level-stat">
                             <div class="level-stat-value">5min</div>
-                            <div class="level-stat-label">Duração</div>
+                            <div class="level-stat-label" id="durationLabel1">Duração</div>
                         </div>
                         <div class="level-stat">
                             <div class="level-stat-value" id="level1Score">-</div>
-                            <div class="level-stat-label">Pontos</div>
+                            <div class="level-stat-label" id="pointsLabel1">Pontos</div>
                         </div>
                     </div>
                 </div>
@@ -1007,22 +1007,22 @@
                 <div class="level-card intermediate locked" id="level2Card" onclick="startLevel(2)">
                     <div class="lock-icon">🔒</div>
                     <div class="level-icon">🟡</div>
-                    <div class="level-title">Nível 2: Competência</div>
-                    <div class="level-description">
+                    <div class="level-title" id="levelTitle2">Nível 2: Competência</div>
+                    <div class="level-description" id="levelDesc2">
                         Aprenda a interagir: Prompt Science, Hallucination, Tokens, RAG e Context Window.
                     </div>
                     <div class="level-stats">
                         <div class="level-stat">
                             <div class="level-stat-value">5</div>
-                            <div class="level-stat-label">Questões</div>
+                            <div class="level-stat-label" id="questionsLabel2">Questões</div>
                         </div>
                         <div class="level-stat">
                             <div class="level-stat-value">5min</div>
-                            <div class="level-stat-label">Duração</div>
+                            <div class="level-stat-label" id="durationLabel2">Duração</div>
                         </div>
                         <div class="level-stat">
                             <div class="level-stat-value" id="level2Score">-</div>
-                            <div class="level-stat-label">Pontos</div>
+                            <div class="level-stat-label" id="pointsLabel2">Pontos</div>
                         </div>
                     </div>
                 </div>
@@ -1031,28 +1031,28 @@
                 <div class="level-card expert locked" id="level3Card" onclick="startLevel(3)">
                     <div class="lock-icon">🔒</div>
                     <div class="level-icon">🔴</div>
-                    <div class="level-title">Nível 3: Maestria</div>
-                    <div class="level-description">
+                    <div class="level-title" id="levelTitle3">Nível 3: Maestria</div>
+                    <div class="level-description" id="levelDesc3">
                         Domine a ciência: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem.
                     </div>
                     <div class="level-stats">
                         <div class="level-stat">
                             <div class="level-stat-value">5</div>
-                            <div class="level-stat-label">Questões</div>
+                            <div class="level-stat-label" id="questionsLabel3">Questões</div>
                         </div>
                         <div class="level-stat">
                             <div class="level-stat-value">5min</div>
-                            <div class="level-stat-label">Duração</div>
+                            <div class="level-stat-label" id="durationLabel3">Duração</div>
                         </div>
                         <div class="level-stat">
                             <div class="level-stat-value" id="level3Score">-</div>
-                            <div class="level-stat-label">Pontos</div>
+                            <div class="level-stat-label" id="pointsLabel3">Pontos</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-secondary" style="margin-top: 30px; width: 100%;" onclick="backToWelcome()">← Voltar</button>
+            <button class="btn btn-secondary" style="margin-top: 30px; width: 100%;" onclick="backToWelcome()" id="backButton">← Voltar</button>
         </div>
 
         <!-- Quiz Screen -->
@@ -1061,27 +1061,27 @@
 
             <div class="score-panel">
                 <div class="score-item">
-                    <div class="score-label">💰 Pontos</div>
+                    <div class="score-label" id="scoreLabel">💰 Pontos</div>
                     <div class="score-value" id="scoreDisplay">0</div>
                 </div>
                 <div class="score-item">
-                    <div class="score-label">🔥 Sequência</div>
+                    <div class="score-label" id="streakLabel">🔥 Sequência</div>
                     <div class="score-value streak" id="streakDisplay">0</div>
                 </div>
                 <div class="score-item">
-                    <div class="score-label">⏱️ Tempo</div>
+                    <div class="score-label" id="timeLabel">⏱️ Tempo</div>
                     <div class="score-value" id="timerDisplay">0s</div>
                 </div>
             </div>
 
             <div class="video-section" id="videoSection">
-                <div class="video-title">📹 Assista ao conceito (8s)</div>
+                <div class="video-title" id="videoTitle">📹 Assista ao conceito (8s)</div>
                 <div class="video-placeholder" id="videoPlaceholder">
                     🎬 <span id="videoTopic"></span>
                     <br><br>
-                    <small style="color: #FF00FF;">📺 Substitua com vídeos do Gemini V3</small>
+                    <small style="color: #FF00FF;" id="videoPlaceholderText">📺 Substitua com vídeos do Gemini V3</small>
                 </div>
-                <button class="skip-video" onclick="skipVideo()">⏭️ Pular vídeo</button>
+                <button class="skip-video" onclick="skipVideo()" id="skipVideoBtn">⏭️ Pular vídeo</button>
             </div>
 
             <div class="question-card">
@@ -1097,11 +1097,11 @@
 
         <!-- Results Screen -->
         <div class="results-screen" id="resultsScreen">
-            <div class="results-title">🎉 Nível Completo!</div>
+            <div class="results-title" id="resultsTitle">🎉 Nível Completo!</div>
 
             <div class="worldwide-rank">
                 <div class="rank-position">#<span id="worldRank">1</span></div>
-                <div class="rank-label">de <span id="totalPlayersResult">0</span> jogadores</div>
+                <div class="rank-label" id="rankLabel">de <span id="totalPlayersResult">0</span> jogadores</div>
                 <div class="rank-badge" id="rankBadge">🥇</div>
                 <div id="rankMessage" style="color: #000; font-weight: 900; margin-top: 15px; font-size: clamp(18px, 4vw, 24px);"></div>
             </div>
@@ -1109,24 +1109,24 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="finalScore">0</div>
-                    <div class="stat-label">🏆 Pontuação</div>
+                    <div class="stat-label" id="finalScoreLabel">🏆 Pontuação</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="finalStreak">0</div>
-                    <div class="stat-label">🔥 Maior Combo</div>
+                    <div class="stat-label" id="finalStreakLabel">🔥 Maior Combo</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="finalTime">0s</div>
-                    <div class="stat-label">⏱️ Tempo Total</div>
+                    <div class="stat-label" id="finalTimeLabel">⏱️ Tempo Total</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="correctAnswers">0/5</div>
-                    <div class="stat-label">✅ Acertos</div>
+                    <div class="stat-label" id="correctAnswersLabel">✅ Acertos</div>
                 </div>
             </div>
 
             <div class="leaderboard">
-                <div class="leaderboard-title">🏆 Top 50 Mundial - <span id="leaderboardLevel">Nível 1</span></div>
+                <div class="leaderboard-title" id="leaderboardTitle">🏆 Top 50 Mundial - <span id="leaderboardLevel">Nível 1</span></div>
                 <div id="leaderboardList"></div>
                 <div style="text-align: center; color: #00D9FF; margin-top: 20px; font-size: clamp(13px, 3vw, 16px); font-weight: bold;">
                     <span id="morePlayersText"></span>
@@ -1134,7 +1134,7 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn btn-primary" onclick="shareResults()">📤 Compartilhar</button>
+                <button class="btn btn-primary" onclick="shareResults()" id="shareButton">📤 Compartilhar</button>
                 <button class="btn btn-secondary" onclick="nextLevelOrRestart()" id="nextLevelBtn">🎯 Próximo Nível</button>
             </div>
         </div>
@@ -1150,9 +1150,12 @@
                 welcomeTitle: "🌍 AI Literacy Challenge",
                 welcomeDesc: "Learn AI in 3 progressive levels! 🚀",
                 playersWorldwide: "players worldwide",
-                level1: "Level 1: Foundation",
-                level2: "Level 2: Competency",
-                level3: "Level 3: Mastery",
+                level1Short: "Level 1: Foundation",
+                level2Short: "Level 2: Competency",
+                level3Short: "Level 3: Mastery",
+                level1Info: "🟢 Level 1: Foundation (Literacy)",
+                level2Info: "🟡 Level 2: Competency (Skills)",
+                level3Info: "🔴 Level 3: Mastery (Science)",
                 level1Desc: "Understand the basics: What is AI? GenAI vs Predictive AI, Neural Networks, and fundamental concepts.",
                 level2Desc: "Learn to interact: Prompt Science, Hallucination, Tokens, RAG, and Context Window.",
                 level3Desc: "Master the science: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem.",
@@ -1180,21 +1183,32 @@
                 top10Message: "TOP 10 WORLDWIDE!",
                 top100Message: "TOP 100!",
                 keepImproving: "Keep improving!",
-                score: "Score",
-                maxCombo: "Max Combo",
-                totalTime: "Total Time",
-                correct: "Correct",
-                streak: "Streak",
-                time: "Time"
+                scoreStat: "🏆 Score",
+                maxCombo: "🔥 Max Combo",
+                totalTime: "⏱️ Total Time",
+                correct: "✅ Correct",
+                streakStat: "🔥 Streak",
+                timeStat: "⏱️ Time",
+                scorePoints: "💰 Points",
+                videoPlaceholder: "📺 Replace with Gemini V3 videos",
+                lockMessage: "🔒 Complete the previous level first!",
+                nameAlert: "✨ Please enter your name!",
+                you: "(YOU!)",
+                andMore: "... and",
+                morePlayers: "more players",
+                combo: "COMBO!"
             },
             pt: {
                 subtitle: "🎓 Desafio AI Literacy",
                 welcomeTitle: "🌍 Desafio AI Literacy",
                 welcomeDesc: "Aprenda IA em 3 níveis progressivos! 🚀",
                 playersWorldwide: "jogadores mundialmente",
-                level1: "Nível 1: Fundação",
-                level2: "Nível 2: Competência",
-                level3: "Nível 3: Maestria",
+                level1Short: "Nível 1: Fundação",
+                level2Short: "Nível 2: Competência",
+                level3Short: "Nível 3: Maestria",
+                level1Info: "🟢 Nível 1: Fundação (Literacy)",
+                level2Info: "🟡 Nível 2: Competência (Skills)",
+                level3Info: "🔴 Nível 3: Maestria (Science)",
                 level1Desc: "Entenda o básico: O que é IA? GenAI vs Predictive AI. Neural Networks e conceitos fundamentais.",
                 level2Desc: "Aprenda a interagir: Prompt Science, Hallucination, Tokens, RAG e Context Window.",
                 level3Desc: "Domine a ciência: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem.",
@@ -1222,12 +1236,20 @@
                 top10Message: "TOP 10 MUNDIAL!",
                 top100Message: "TOP 100!",
                 keepImproving: "Continue melhorando!",
-                score: "Pontuação",
-                maxCombo: "Maior Combo",
-                totalTime: "Tempo Total",
-                correct: "Acertos",
-                streak: "Sequência",
-                time: "Tempo"
+                scoreStat: "🏆 Pontuação",
+                maxCombo: "🔥 Maior Combo",
+                totalTime: "⏱️ Tempo Total",
+                correct: "✅ Acertos",
+                streakStat: "🔥 Sequência",
+                timeStat: "⏱️ Tempo",
+                scorePoints: "💰 Pontos",
+                videoPlaceholder: "📺 Substitua com vídeos do Gemini V3",
+                lockMessage: "🔒 Complete o nível anterior primeiro!",
+                nameAlert: "✨ Por favor, digite seu nome!",
+                you: "(VOCÊ!)",
+                andMore: "... e mais",
+                morePlayers: "jogadores",
+                combo: "COMBO!"
             }
         };
 
@@ -1243,215 +1265,885 @@
         }
 
         function updateUILanguage() {
-            // Update static text elements
-            const subtitle = document.querySelector('.subtitle');
-            if (subtitle) subtitle.textContent = t('subtitle');
+            // Header
+            document.getElementById('headerSubtitle').textContent = t('subtitle');
 
-            // Update other visible elements based on current screen
-            // This will be called when switching screens too
+            // Welcome Screen
+            document.getElementById('welcomeTitle').textContent = t('welcomeTitle');
+            document.getElementById('welcomeDesc').textContent = t('welcomeDesc');
+            document.getElementById('playersText').textContent = t('playersWorldwide');
+            document.getElementById('level1Info').textContent = t('level1Info');
+            document.getElementById('level2Info').textContent = t('level2Info');
+            document.getElementById('level3Info').textContent = t('level3Info');
+            document.getElementById('playerName').placeholder = t('namePlaceholder');
+            document.getElementById('startButton').textContent = t('startButton');
+
+            // Level Selection
+            document.getElementById('levelTitle1').textContent = t('level1Short');
+            document.getElementById('levelTitle2').textContent = t('level2Short');
+            document.getElementById('levelTitle3').textContent = t('level3Short');
+            document.getElementById('levelDesc1').textContent = t('level1Desc');
+            document.getElementById('levelDesc2').textContent = t('level2Desc');
+            document.getElementById('levelDesc3').textContent = t('level3Desc');
+
+            ['1', '2', '3'].forEach(num => {
+                document.getElementById(`questionsLabel${num}`).textContent = t('questions');
+                document.getElementById(`durationLabel${num}`).textContent = t('duration');
+                document.getElementById(`pointsLabel${num}`).textContent = t('points');
+            });
+
+            document.getElementById('backButton').textContent = t('backButton');
+
+            // Quiz Screen
+            updateLevelBadge();
+            document.getElementById('scoreLabel').textContent = t('scorePoints');
+            document.getElementById('streakLabel').textContent = t('streakStat');
+            document.getElementById('timeLabel').textContent = t('timeStat');
+            document.getElementById('videoTitle').textContent = t('watchConcept');
+            document.getElementById('videoPlaceholderText').textContent = t('videoPlaceholder');
+            document.getElementById('skipVideoBtn').textContent = t('skipVideo');
+            document.getElementById('nextBtn').textContent = t('nextButton');
+
+            // Results Screen
+            document.getElementById('resultsTitle').textContent = t('resultsTitle');
+            document.getElementById('finalScoreLabel').textContent = t('scoreStat');
+            document.getElementById('finalStreakLabel').textContent = t('maxCombo');
+            document.getElementById('finalTimeLabel').textContent = t('totalTime');
+            document.getElementById('correctAnswersLabel').textContent = t('correct');
+            document.getElementById('shareButton').textContent = t('shareButton');
+
+            // Update rank label
+            const rankLabelEl = document.getElementById('rankLabel');
+            if (rankLabelEl) {
+                const totalPlayers = document.getElementById('totalPlayersResult').textContent;
+                rankLabelEl.innerHTML = `${t('worldRank')} <span id="totalPlayersResult">${totalPlayers}</span> ${t('players')}`;
+            }
+
+            // Update question number if in quiz
+            if (document.getElementById('quizScreen').classList.contains('active')) {
+                updateQuestionNumber();
+            }
         }
 
-        // LEVEL-BASED QUESTIONS with Academic Vocabulary (Bilingual)
+        function updateLevelBadge() {
+            const badges = {
+                1: `🟢 ${t('level1Short')}`,
+                2: `🟡 ${t('level2Short')}`,
+                3: `🔴 ${t('level3Short')}`
+            };
+            if (currentLevel && badges[currentLevel]) {
+                document.getElementById('currentLevelBadge').textContent = badges[currentLevel];
+            }
+        }
+
+        function updateQuestionNumber() {
+            const questionNum = document.getElementById('questionNumber');
+            if (questionNum && currentQuestion !== undefined) {
+                questionNum.textContent = `${t('questionOf')} ${currentQuestion + 1} ${t('of')} 5`;
+            }
+        }
+
+        // BILINGUAL QUESTIONS with Academic Vocabulary
         const levels = {
             1: [ // 🟢 FOUNDATION (Literacy)
                 {
-                    videoTopic: "A Ciência do Artificial",
+                    videoTopic: {
+                        pt: "A Ciência do Artificial",
+                        en: "The Science of the Artificial"
+                    },
                     videoUrl: "level1-video1.mp4",
-                    question: "Como a IA é definida cientificamente?",
+                    question: {
+                        pt: "Como a IA é definida cientificamente?",
+                        en: "How is AI defined scientifically?"
+                    },
                     options: [
-                        { text: "Ciência do Artificial - engenharia de artefatos inteligentes", emoji: "🔬", correct: true },
-                        { text: "Magia tecnológica sem explicação", emoji: "🎩", correct: false },
-                        { text: "Apenas robôs físicos", emoji: "🤖", correct: false },
-                        { text: "Software comum de computador", emoji: "💻", correct: false }
+                        {
+                            text: {
+                                pt: "Ciência do Artificial - engenharia de artefatos inteligentes",
+                                en: "Science of the Artificial - engineering of intelligent artifacts"
+                            },
+                            emoji: "🔬",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Magia tecnológica sem explicação",
+                                en: "Unexplainable technological magic"
+                            },
+                            emoji: "🎩",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Apenas robôs físicos",
+                                en: "Only physical robots"
+                            },
+                            emoji: "🤖",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Software comum de computador",
+                                en: "Common computer software"
+                            },
+                            emoji: "💻",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ CORRETO! IA é a 'Ciência do Artificial' - uma disciplina de engenharia que projeta sistemas com comportamento inteligente!",
-                    wrongExplanation: "❌ Pense em IA como ciência de engenharia, não magia!"
+                    explanation: {
+                        pt: "✅ CORRETO! IA é a 'Ciência do Artificial' - uma disciplina de engenharia que projeta sistemas com comportamento inteligente!",
+                        en: "✅ CORRECT! AI is the 'Science of the Artificial' - an engineering discipline that designs systems with intelligent behavior!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Pense em IA como ciência de engenharia, não magia!",
+                        en: "❌ Think of AI as engineering science, not magic!"
+                    }
                 },
                 {
-                    videoTopic: "Oráculo vs Artista",
+                    videoTopic: {
+                        pt: "Oráculo vs Artista",
+                        en: "Oracle vs Artist"
+                    },
                     videoUrl: "level1-video2.mp4",
-                    question: "Qual é a diferença fundamental entre IA Preditiva e IA Generativa?",
+                    question: {
+                        pt: "Qual é a diferença fundamental entre IA Preditiva e IA Generativa?",
+                        en: "What is the fundamental difference between Predictive AI and Generative AI?"
+                    },
                     options: [
-                        { text: "Preditiva prevê (Oracle), Generativa cria (Artist)", emoji: "🎨", correct: true },
-                        { text: "São a mesma coisa", emoji: "🤷", correct: false },
-                        { text: "Generativa é mais antiga", emoji: "📜", correct: false },
-                        { text: "Preditiva usa mais energia", emoji: "⚡", correct: false }
+                        {
+                            text: {
+                                pt: "Preditiva prevê (Oracle), Generativa cria (Artist)",
+                                en: "Predictive predicts (Oracle), Generative creates (Artist)"
+                            },
+                            emoji: "🎨",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "São a mesma coisa",
+                                en: "They are the same thing"
+                            },
+                            emoji: "🤷",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Generativa é mais antiga",
+                                en: "Generative is older"
+                            },
+                            emoji: "📜",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Preditiva usa mais energia",
+                                en: "Predictive uses more energy"
+                            },
+                            emoji: "⚡",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ PERFEITO! IA Preditiva = Oráculo (busca resposta correta). IA Generativa = Artista (cria conteúdo novo)!",
-                    wrongExplanation: "❌ Pense: Prever vs Criar!"
+                    explanation: {
+                        pt: "✅ PERFEITO! IA Preditiva = Oráculo (busca resposta correta). IA Generativa = Artista (cria conteúdo novo)!",
+                        en: "✅ PERFECT! Predictive AI = Oracle (seeks correct answer). Generative AI = Artist (creates new content)!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Pense: Prever vs Criar!",
+                        en: "❌ Think: Predict vs Create!"
+                    }
                 },
                 {
-                    videoTopic: "Large Language Models",
+                    videoTopic: {
+                        pt: "Large Language Models",
+                        en: "Large Language Models"
+                    },
                     videoUrl: "level1-video3.mp4",
-                    question: "O que um LLM (Large Language Model) realmente modela?",
+                    question: {
+                        pt: "O que um LLM (Large Language Model) realmente modela?",
+                        en: "What does an LLM (Large Language Model) actually model?"
+                    },
                     options: [
-                        { text: "A verdade absoluta", emoji: "✅", correct: false },
-                        { text: "A probabilidade da linguagem", emoji: "🎲", correct: true },
-                        { text: "Emoções humanas", emoji: "❤️", correct: false },
-                        { text: "Regras gramaticais fixas", emoji: "📖", correct: false }
+                        {
+                            text: {
+                                pt: "A verdade absoluta",
+                                en: "Absolute truth"
+                            },
+                            emoji: "✅",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "A probabilidade da linguagem",
+                                en: "Language probability"
+                            },
+                            emoji: "🎲",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Emoções humanas",
+                                en: "Human emotions"
+                            },
+                            emoji: "❤️",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Regras gramaticais fixas",
+                                en: "Fixed grammar rules"
+                            },
+                            emoji: "📖",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ EXCELENTE! LLMs modelam probabilidades de sequências linguísticas, não verdade!",
-                    wrongExplanation: "❌ LLMs são probabilísticos, não determinísticos!"
+                    explanation: {
+                        pt: "✅ EXCELENTE! LLMs modelam probabilidades de sequências linguísticas, não verdade!",
+                        en: "✅ EXCELLENT! LLMs model probabilities of linguistic sequences, not truth!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ LLMs são probabilísticos, não determinísticos!",
+                        en: "❌ LLMs are probabilistic, not deterministic!"
+                    }
                 },
                 {
-                    videoTopic: "Redes Neurais",
+                    videoTopic: {
+                        pt: "Redes Neurais",
+                        en: "Neural Networks"
+                    },
                     videoUrl: "level1-video4.mp4",
-                    question: "Como as Neural Networks aprendem?",
+                    question: {
+                        pt: "Como as Neural Networks aprendem?",
+                        en: "How do Neural Networks learn?"
+                    },
                     options: [
-                        { text: "Memorizam tudo perfeitamente", emoji: "🧠", correct: false },
-                        { text: "Camadas de 'neurônios' reconhecem padrões", emoji: "🕸️", correct: true },
-                        { text: "Copiam o código de programadores", emoji: "💻", correct: false },
-                        { text: "Usam magia estatística", emoji: "✨", correct: false }
+                        {
+                            text: {
+                                pt: "Memorizam tudo perfeitamente",
+                                en: "Memorize everything perfectly"
+                            },
+                            emoji: "🧠",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Camadas de 'neurônios' reconhecem padrões",
+                                en: "Layers of 'neurons' recognize patterns"
+                            },
+                            emoji: "🕸️",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Copiam o código de programadores",
+                                en: "Copy programmer's code"
+                            },
+                            emoji: "💻",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Usam magia estatística",
+                                en: "Use statistical magic"
+                            },
+                            emoji: "✨",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ CORRETO! Redes neurais usam camadas de neurônios artificiais que aprendem padrões hierárquicos!",
-                    wrongExplanation: "❌ Pense em camadas que detectam: bordas → formas → conceitos!"
+                    explanation: {
+                        pt: "✅ CORRETO! Redes neurais usam camadas de neurônios artificiais que aprendem padrões hierárquicos!",
+                        en: "✅ CORRECT! Neural networks use layers of artificial neurons that learn hierarchical patterns!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Pense em camadas que detectam: bordas → formas → conceitos!",
+                        en: "❌ Think of layers that detect: edges → shapes → concepts!"
+                    }
                 },
                 {
-                    videoTopic: "Algoritmos de IA",
+                    videoTopic: {
+                        pt: "Algoritmos de IA",
+                        en: "AI Algorithms"
+                    },
                     videoUrl: "level1-video5.mp4",
-                    question: "O que é um Algoritmo em GenAI?",
+                    question: {
+                        pt: "O que é um Algoritmo em GenAI?",
+                        en: "What is an Algorithm in GenAI?"
+                    },
                     options: [
-                        { text: "Um robô físico", emoji: "🤖", correct: false },
-                        { text: "A 'receita' que processa dados", emoji: "📋", correct: true },
-                        { text: "Um banco de dados", emoji: "🗄️", correct: false },
-                        { text: "Uma linguagem de programação", emoji: "💻", correct: false }
+                        {
+                            text: {
+                                pt: "Um robô físico",
+                                en: "A physical robot"
+                            },
+                            emoji: "🤖",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "A 'receita' que processa dados",
+                                en: "The 'recipe' that processes data"
+                            },
+                            emoji: "📋",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Um banco de dados",
+                                en: "A database"
+                            },
+                            emoji: "🗄️",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Uma linguagem de programação",
+                                en: "A programming language"
+                            },
+                            emoji: "💻",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ PERFEITO! Algoritmo é o conjunto de regras/instruções que a IA usa para aprender!",
-                    wrongExplanation: "❌ Pense na 'receita' de processamento!"
+                    explanation: {
+                        pt: "✅ PERFEITO! Algoritmo é o conjunto de regras/instruções que a IA usa para aprender!",
+                        en: "✅ PERFECT! Algorithm is the set of rules/instructions that AI uses to learn!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Pense na 'receita' de processamento!",
+                        en: "❌ Think of the processing 'recipe'!"
+                    }
                 }
             ],
             2: [ // 🟡 COMPETENCY (Skills)
                 {
-                    videoTopic: "Ciência de Prompts",
+                    videoTopic: {
+                        pt: "Ciência de Prompts",
+                        en: "Prompt Science"
+                    },
                     videoUrl: "level2-video1.mp4",
-                    question: "Como a Prompt Science define um prompt?",
+                    question: {
+                        pt: "Como a Prompt Science define um prompt?",
+                        en: "How does Prompt Science define a prompt?"
+                    },
                     options: [
-                        { text: "Pergunta aleatória para IA", emoji: "🤷", correct: false },
-                        { text: "Configuração de Variáveis Independentes", emoji: "🎯", correct: true },
-                        { text: "Comando mágico", emoji: "✨", correct: false },
-                        { text: "Texto qualquer", emoji: "📝", correct: false }
+                        {
+                            text: {
+                                pt: "Pergunta aleatória para IA",
+                                en: "Random question for AI"
+                            },
+                            emoji: "🤷",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Configuração de Variáveis Independentes",
+                                en: "Configuration of Independent Variables"
+                            },
+                            emoji: "🎯",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Comando mágico",
+                                en: "Magic command"
+                            },
+                            emoji: "✨",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Texto qualquer",
+                                en: "Any text"
+                            },
+                            emoji: "📝",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ EXCELENTE! Prompt = Configuração científica de variáveis (Tarefa + Contexto + Persona)!",
-                    wrongExplanation: "❌ Prompts são experimentos científicos, não adivinhação!"
+                    explanation: {
+                        pt: "✅ EXCELENTE! Prompt = Configuração científica de variáveis (Tarefa + Contexto + Persona)!",
+                        en: "✅ EXCELLENT! Prompt = Scientific configuration of variables (Task + Context + Persona)!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Prompts são experimentos científicos, não adivinhação!",
+                        en: "❌ Prompts are scientific experiments, not guesswork!"
+                    }
                 },
                 {
-                    videoTopic: "Alucinação (Ruído Epistêmico)",
+                    videoTopic: {
+                        pt: "Alucinação (Ruído Epistêmico)",
+                        en: "Hallucination (Epistemic Noise)"
+                    },
                     videoUrl: "level2-video2.mp4",
-                    question: "O que é 'Hallucination' em IA?",
+                    question: {
+                        pt: "O que é 'Hallucination' em IA?",
+                        en: "What is 'Hallucination' in AI?"
+                    },
                     options: [
-                        { text: "IA mentindo propositalmente", emoji: "🤥", correct: false },
-                        { text: "Ruído epistêmico - padrão plausível sem ancoragem factual", emoji: "⚠️", correct: true },
-                        { text: "IA tendo sonhos", emoji: "💭", correct: false },
-                        { text: "Erro de programação", emoji: "🐛", correct: false }
+                        {
+                            text: {
+                                pt: "IA mentindo propositalmente",
+                                en: "AI deliberately lying"
+                            },
+                            emoji: "🤥",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Ruído epistêmico - padrão plausível sem ancoragem factual",
+                                en: "Epistemic noise - plausible pattern without factual grounding"
+                            },
+                            emoji: "⚠️",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "IA tendo sonhos",
+                                en: "AI having dreams"
+                            },
+                            emoji: "💭",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Erro de programação",
+                                en: "Programming error"
+                            },
+                            emoji: "🐛",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ CORRETO! Hallucination = completar padrão probabilístico sem verdade factual!",
-                    wrongExplanation: "❌ Não é mentira - é padrão sem ancoragem!"
+                    explanation: {
+                        pt: "✅ CORRETO! Hallucination = completar padrão probabilístico sem verdade factual!",
+                        en: "✅ CORRECT! Hallucination = completing probabilistic pattern without factual truth!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Não é mentira - é padrão sem ancoragem!",
+                        en: "❌ It's not a lie - it's pattern without grounding!"
+                    }
                 },
                 {
-                    videoTopic: "Tokens",
+                    videoTopic: {
+                        pt: "Tokens",
+                        en: "Tokens"
+                    },
                     videoUrl: "level2-video3.mp4",
-                    question: "O que é um Token em IA?",
+                    question: {
+                        pt: "O que é um Token em IA?",
+                        en: "What is a Token in AI?"
+                    },
                     options: [
-                        { text: "Uma palavra completa", emoji: "📝", correct: false },
-                        { text: "Unidade fundamental (~0.75 palavras)", emoji: "🔤", correct: true },
-                        { text: "Uma frase inteira", emoji: "📄", correct: false },
-                        { text: "Um caractere individual", emoji: "A", correct: false }
+                        {
+                            text: {
+                                pt: "Uma palavra completa",
+                                en: "A complete word"
+                            },
+                            emoji: "📝",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Unidade fundamental (~0.75 palavras)",
+                                en: "Fundamental unit (~0.75 words)"
+                            },
+                            emoji: "🔤",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Uma frase inteira",
+                                en: "A complete sentence"
+                            },
+                            emoji: "📄",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Um caractere individual",
+                                en: "An individual character"
+                            },
+                            emoji: "A",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ PERFEITO! Token = unidade básica de processamento (~0.75 palavras). Custos e limites são medidos em tokens!",
-                    wrongExplanation: "❌ Tokens são menores que palavras!"
+                    explanation: {
+                        pt: "✅ PERFEITO! Token = unidade básica de processamento (~0.75 palavras). Custos e limites são medidos em tokens!",
+                        en: "✅ PERFECT! Token = basic processing unit (~0.75 words). Costs and limits are measured in tokens!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Tokens são menores que palavras!",
+                        en: "❌ Tokens are smaller than words!"
+                    }
                 },
                 {
-                    videoTopic: "Context Window",
+                    videoTopic: {
+                        pt: "Context Window",
+                        en: "Context Window"
+                    },
                     videoUrl: "level2-video4.mp4",
-                    question: "O que é a Context Window?",
+                    question: {
+                        pt: "O que é a Context Window?",
+                        en: "What is the Context Window?"
+                    },
                     options: [
-                        { text: "A janela do navegador", emoji: "🪟", correct: false },
-                        { text: "Memória de curto prazo da IA", emoji: "🧠", correct: true },
-                        { text: "Velocidade de processamento", emoji: "⚡", correct: false },
-                        { text: "Tamanho da tela", emoji: "📱", correct: false }
+                        {
+                            text: {
+                                pt: "A janela do navegador",
+                                en: "The browser window"
+                            },
+                            emoji: "🪟",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Memória de curto prazo da IA",
+                                en: "AI's short-term memory"
+                            },
+                            emoji: "🧠",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Velocidade de processamento",
+                                en: "Processing speed"
+                            },
+                            emoji: "⚡",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Tamanho da tela",
+                                en: "Screen size"
+                            },
+                            emoji: "📱",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ EXCELENTE! Context Window = memória de curto prazo. Além do limite, a IA 'esquece' o início!",
-                    wrongExplanation: "❌ Pense na memória RAM da conversa!"
+                    explanation: {
+                        pt: "✅ EXCELENTE! Context Window = memória de curto prazo. Além do limite, a IA 'esquece' o início!",
+                        en: "✅ EXCELLENT! Context Window = short-term memory. Beyond the limit, AI 'forgets' the beginning!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Pense na memória RAM da conversa!",
+                        en: "❌ Think of the conversation's RAM!"
+                    }
                 },
                 {
-                    videoTopic: "RAG (Retrieval Augmented Generation)",
+                    videoTopic: {
+                        pt: "RAG (Retrieval Augmented Generation)",
+                        en: "RAG (Retrieval Augmented Generation)"
+                    },
                     videoUrl: "level2-video5.mp4",
-                    question: "O que é RAG?",
+                    question: {
+                        pt: "O que é RAG?",
+                        en: "What is RAG?"
+                    },
                     options: [
-                        { text: "Um tipo de música", emoji: "🎵", correct: false },
-                        { text: "Método de ancorar IA em documentos específicos", emoji: "📚", correct: true },
-                        { text: "Rede social para IA", emoji: "💬", correct: false },
-                        { text: "Algoritmo de criptografia", emoji: "🔒", correct: false }
+                        {
+                            text: {
+                                pt: "Um tipo de música",
+                                en: "A type of music"
+                            },
+                            emoji: "🎵",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Método de ancorar IA em documentos específicos",
+                                en: "Method to ground AI in specific documents"
+                            },
+                            emoji: "📚",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Rede social para IA",
+                                en: "Social network for AI"
+                            },
+                            emoji: "💬",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Algoritmo de criptografia",
+                                en: "Encryption algorithm"
+                            },
+                            emoji: "🔒",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ CORRETO! RAG = forçar IA a ler documento antes de responder, reduzindo hallucinations!",
-                    wrongExplanation: "❌ RAG ancora a IA em fontes reais!"
+                    explanation: {
+                        pt: "✅ CORRETO! RAG = forçar IA a ler documento antes de responder, reduzindo hallucinations!",
+                        en: "✅ CORRECT! RAG = forcing AI to read document before answering, reducing hallucinations!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ RAG ancora a IA em fontes reais!",
+                        en: "❌ RAG grounds AI in real sources!"
+                    }
                 }
             ],
             3: [ // 🔴 MASTERY (Science & Pedagogy)
                 {
-                    videoTopic: "Chain of Thought (CoT)",
+                    videoTopic: {
+                        pt: "Chain of Thought (CoT)",
+                        en: "Chain of Thought (CoT)"
+                    },
                     videoUrl: "level3-video1.mp4",
-                    question: "O que é Chain of Thought?",
+                    question: {
+                        pt: "O que é Chain of Thought?",
+                        en: "What is Chain of Thought?"
+                    },
                     options: [
-                        { text: "Corrente física", emoji: "⛓️", correct: false },
-                        { text: "Técnica: IA mostra raciocínio passo-a-passo", emoji: "🧠", correct: true },
-                        { text: "Tipo de blockchain", emoji: "🔗", correct: false },
-                        { text: "Método de criptografia", emoji: "🔐", correct: false }
+                        {
+                            text: {
+                                pt: "Corrente física",
+                                en: "Physical chain"
+                            },
+                            emoji: "⛓️",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Técnica: IA mostra raciocínio passo-a-passo",
+                                en: "Technique: AI shows step-by-step reasoning"
+                            },
+                            emoji: "🧠",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Tipo de blockchain",
+                                en: "Type of blockchain"
+                            },
+                            emoji: "🔗",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Método de criptografia",
+                                en: "Encryption method"
+                            },
+                            emoji: "🔐",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ PERFEITO! CoT = forçar IA a 'mostrar o trabalho' antes da resposta final. Aumenta precisão!",
-                    wrongExplanation: "❌ CoT é raciocínio explícito passo-a-passo!"
+                    explanation: {
+                        pt: "✅ PERFEITO! CoT = forçar IA a 'mostrar o trabalho' antes da resposta final. Aumenta precisão!",
+                        en: "✅ PERFECT! CoT = forcing AI to 'show its work' before final answer. Increases accuracy!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ CoT é raciocínio explícito passo-a-passo!",
+                        en: "❌ CoT is explicit step-by-step reasoning!"
+                    }
                 },
                 {
-                    videoTopic: "Temperature (Hiperparâmetro)",
+                    videoTopic: {
+                        pt: "Temperature (Hiperparâmetro)",
+                        en: "Temperature (Hyperparameter)"
+                    },
                     videoUrl: "level3-video2.mp4",
-                    question: "O que Temperature controla?",
+                    question: {
+                        pt: "O que Temperature controla?",
+                        en: "What does Temperature control?"
+                    },
                     options: [
-                        { text: "Temperatura do processador", emoji: "🌡️", correct: false },
-                        { text: "Randomness: Baixo=Factual, Alto=Criativo", emoji: "🎲", correct: true },
-                        { text: "Velocidade de resposta", emoji: "⚡", correct: false },
-                        { text: "Tamanho da resposta", emoji: "📏", correct: false }
+                        {
+                            text: {
+                                pt: "Temperatura do processador",
+                                en: "Processor temperature"
+                            },
+                            emoji: "🌡️",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Randomness: Baixo=Factual, Alto=Criativo",
+                                en: "Randomness: Low=Factual, High=Creative"
+                            },
+                            emoji: "🎲",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Velocidade de resposta",
+                                en: "Response speed"
+                            },
+                            emoji: "⚡",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Tamanho da resposta",
+                                en: "Response size"
+                            },
+                            emoji: "📏",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ EXCELENTE! Temperature 0.2=determinístico, 0.8=criativo. É o 'controle de criatividade'!",
-                    wrongExplanation: "❌ Temperature controla aleatoriedade, não calor!"
+                    explanation: {
+                        pt: "✅ EXCELENTE! Temperature 0.2=determinístico, 0.8=criativo. É o 'controle de criatividade'!",
+                        en: "✅ EXCELLENT! Temperature 0.2=deterministic, 0.8=creative. It's the 'creativity control'!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Temperature controla aleatoriedade, não calor!",
+                        en: "❌ Temperature controls randomness, not heat!"
+                    }
                 },
                 {
-                    videoTopic: "Agência Epistêmica",
+                    videoTopic: {
+                        pt: "Agência Epistêmica",
+                        en: "Epistemic Agency"
+                    },
                     videoUrl: "level3-video3.mp4",
-                    question: "O que é Epistemic Agency?",
+                    question: {
+                        pt: "O que é Epistemic Agency?",
+                        en: "What is Epistemic Agency?"
+                    },
                     options: [
-                        { text: "Agência de viagens", emoji: "✈️", correct: false },
-                        { text: "Responsabilidade humana de verificar verdade", emoji: "⚖️", correct: true },
-                        { text: "Tipo de IA", emoji: "🤖", correct: false },
-                        { text: "Software de segurança", emoji: "🔒", correct: false }
+                        {
+                            text: {
+                                pt: "Agência de viagens",
+                                en: "Travel agency"
+                            },
+                            emoji: "✈️",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Responsabilidade humana de verificar verdade",
+                                en: "Human responsibility to verify truth"
+                            },
+                            emoji: "⚖️",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Tipo de IA",
+                                en: "Type of AI"
+                            },
+                            emoji: "🤖",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Software de segurança",
+                                en: "Security software"
+                            },
+                            emoji: "🔒",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ CORRETO! Humano = Magistrado da Verdade. Nunca delegar julgamento final à máquina!",
-                    wrongExplanation: "❌ Você é o juiz final da verdade!"
+                    explanation: {
+                        pt: "✅ CORRETO! Humano = Magistrado da Verdade. Nunca delegar julgamento final à máquina!",
+                        en: "✅ CORRECT! Human = Magistrate of Truth. Never delegate final judgment to machine!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ Você é o juiz final da verdade!",
+                        en: "❌ You are the final judge of truth!"
+                    }
                 },
                 {
-                    videoTopic: "O Problema 2 Sigma",
+                    videoTopic: {
+                        pt: "O Problema 2 Sigma",
+                        en: "The 2 Sigma Problem"
+                    },
                     videoUrl: "level3-video4.mp4",
-                    question: "O que é o Problema 2 Sigma?",
+                    question: {
+                        pt: "O que é o Problema 2 Sigma?",
+                        en: "What is the 2 Sigma Problem?"
+                    },
                     options: [
-                        { text: "Equação matemática", emoji: "➗", correct: false },
-                        { text: "Tutoria 1-on-1 é vastamente superior à sala de aula", emoji: "🎯", correct: true },
-                        { text: "Tipo de vírus", emoji: "🦠", correct: false },
-                        { text: "Problema de internet", emoji: "📡", correct: false }
+                        {
+                            text: {
+                                pt: "Equação matemática",
+                                en: "Mathematical equation"
+                            },
+                            emoji: "➗",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Tutoria 1-on-1 é vastamente superior à sala de aula",
+                                en: "1-on-1 tutoring is vastly superior to classroom"
+                            },
+                            emoji: "🎯",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Tipo de vírus",
+                                en: "Type of virus"
+                            },
+                            emoji: "🦠",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Problema de internet",
+                                en: "Internet problem"
+                            },
+                            emoji: "📡",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ PERFEITO! 2 Sigma = tutoria individual é 2 desvios-padrão melhor. IA pode escalar isso!",
-                    wrongExplanation: "❌ É sobre personalização educacional!"
+                    explanation: {
+                        pt: "✅ PERFEITO! 2 Sigma = tutoria individual é 2 desvios-padrão melhor. IA pode escalar isso!",
+                        en: "✅ PERFECT! 2 Sigma = individual tutoring is 2 standard deviations better. AI can scale this!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ É sobre personalização educacional!",
+                        en: "❌ It's about educational personalization!"
+                    }
                 },
                 {
-                    videoTopic: "Método Sanduíche",
+                    videoTopic: {
+                        pt: "Método Sanduíche",
+                        en: "Sandwich Method"
+                    },
                     videoUrl: "level3-video5.mp4",
-                    question: "O que é o Método Sanduíche?",
+                    question: {
+                        pt: "O que é o Método Sanduíche?",
+                        en: "What is the Sandwich Method?"
+                    },
                     options: [
-                        { text: "Receita culinária", emoji: "🥪", correct: false },
-                        { text: "Humano guia → IA processa → Humano verifica", emoji: "👨‍🏫", correct: true },
-                        { text: "Técnica de programação", emoji: "💻", correct: false },
-                        { text: "Tipo de backup", emoji: "💾", correct: false }
+                        {
+                            text: {
+                                pt: "Receita culinária",
+                                en: "Cooking recipe"
+                            },
+                            emoji: "🥪",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Humano guia → IA processa → Humano verifica",
+                                en: "Human guides → AI processes → Human verifies"
+                            },
+                            emoji: "👨‍🏫",
+                            correct: true
+                        },
+                        {
+                            text: {
+                                pt: "Técnica de programação",
+                                en: "Programming technique"
+                            },
+                            emoji: "💻",
+                            correct: false
+                        },
+                        {
+                            text: {
+                                pt: "Tipo de backup",
+                                en: "Type of backup"
+                            },
+                            emoji: "💾",
+                            correct: false
+                        }
                     ],
-                    explanation: "✅ EXCELENTE! Workflow: Orientação humana (pão) + Processamento IA (recheio) + Validação humana (pão)!",
-                    wrongExplanation: "❌ É um workflow de colaboração humano-IA!"
+                    explanation: {
+                        pt: "✅ EXCELENTE! Workflow: Orientação humana (pão) + Processamento IA (recheio) + Validação humana (pão)!",
+                        en: "✅ EXCELLENT! Workflow: Human guidance (bread) + AI processing (filling) + Human validation (bread)!"
+                    },
+                    wrongExplanation: {
+                        pt: "❌ É um workflow de colaboração humano-IA!",
+                        en: "❌ It's a human-AI collaboration workflow!"
+                    }
                 }
             ]
         };
@@ -1471,6 +2163,10 @@
         let levelsCompleted = {1: false, 2: false, 3: false};
 
         async function init() {
+            // Initialize language
+            document.getElementById('langToggle').textContent = currentLang === 'pt' ? '🇺🇸 English' : '🇧🇷 Português';
+            updateUILanguage();
+
             // Initialize database capability
             try {
                 window.db = await claude.use('db');
@@ -1553,7 +2249,7 @@
         function enterLevels() {
             playerName = document.getElementById('playerName').value.trim();
             if (!playerName) {
-                alert('✨ Por favor, digite seu nome!');
+                alert(t('nameAlert'));
                 return;
             }
 
@@ -1569,7 +2265,7 @@
         function startLevel(level) {
             const card = document.getElementById(`level${level}Card`);
             if (card && card.classList.contains('locked')) {
-                alert('🔒 Complete o nível anterior primeiro!');
+                alert(t('lockMessage'));
                 return;
             }
 
@@ -1577,17 +2273,7 @@
             document.getElementById('levelSelect').classList.remove('active');
             document.getElementById('quizScreen').classList.add('active');
 
-            // Update badge
-            const badges = {
-                1: '🟢 Nível 1: Fundação',
-                2: '🟡 Nível 2: Competência',
-                3: '🔴 Nível 3: Maestria'
-            };
-            const badgeEl = document.getElementById('currentLevelBadge');
-            badgeEl.textContent = badges[level];
-            badgeEl.className = 'level-badge';
-            if (level === 2) badgeEl.classList.add('intermediate');
-            if (level === 3) badgeEl.classList.add('expert');
+            updateLevelBadge();
 
             currentQuestion = 0;
             score = 0;
@@ -1612,9 +2298,10 @@
             const q = questions[currentQuestion];
             videoWatched = false;
 
-            document.getElementById('questionNumber').textContent = `Pergunta ${currentQuestion + 1} de 5`;
-            document.getElementById('questionText').textContent = q.question;
-            document.getElementById('videoTopic').textContent = q.videoTopic;
+            updateQuestionNumber();
+
+            document.getElementById('questionText').textContent = typeof q.question === 'object' ? q.question[currentLang] : q.question;
+            document.getElementById('videoTopic').textContent = typeof q.videoTopic === 'object' ? q.videoTopic[currentLang] : q.videoTopic;
             document.getElementById('feedbackBox').classList.remove('active');
             document.getElementById('nextBtn').classList.remove('active');
 
@@ -1627,9 +2314,10 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.disabled = true;
+                const optionText = typeof option.text === 'object' ? option.text[currentLang] : option.text;
                 btn.innerHTML = `
                     <span class="option-emoji">${option.emoji}</span>
-                    <span>${option.text}</span>
+                    <span>${optionText}</span>
                 `;
                 btn.onclick = () => selectAnswer(index);
                 optionsContainer.appendChild(btn);
@@ -1667,14 +2355,17 @@
                 document.getElementById('scoreDisplay').textContent = score;
                 document.getElementById('streakDisplay').textContent = streak;
 
+                const explanation = typeof q.explanation === 'object' ? q.explanation[currentLang] : q.explanation;
+                const comboText = streak > 1 ? ` 🔥 (+${(streak-1)*5} ${t('combo')})` : '';
+
                 const feedbackBox = document.getElementById('feedbackBox');
                 feedbackBox.className = 'feedback-box correct active';
                 feedbackBox.innerHTML = `
                     <div style="font-size: clamp(20px, 5vw, 26px); margin-bottom: 15px;">
-                        ${q.explanation}
+                        ${explanation}
                     </div>
                     <div style="font-size: clamp(18px, 4vw, 22px); color: #FFD700;">
-                        💰 +${points} pontos ${streak > 1 ? '🔥 (+' + ((streak-1)*5) + ' COMBO!)' : ''}
+                        💰 +${points} ${currentLang === 'pt' ? 'pontos' : 'points'}${comboText}
                     </div>
                 `;
 
@@ -1691,11 +2382,13 @@
                     }
                 });
 
+                const wrongExp = typeof q.wrongExplanation === 'object' ? q.wrongExplanation[currentLang] : q.wrongExplanation;
+
                 const feedbackBox = document.getElementById('feedbackBox');
                 feedbackBox.className = 'feedback-box incorrect active';
                 feedbackBox.innerHTML = `
                     <div style="font-size: clamp(20px, 5vw, 26px);">
-                        ${q.wrongExplanation}
+                        ${wrongExp}
                     </div>
                 `;
             }
@@ -1774,38 +2467,40 @@
             document.getElementById('totalPlayersResult').textContent = total;
 
             let badge = '💪';
-            let message = 'Continue melhorando!';
+            let message = t('keepImproving');
 
             if (rank === 1) {
                 badge = '🥇';
-                message = 'CAMPEÃO MUNDIAL!';
+                message = t('championMessage');
             } else if (rank === 2) {
                 badge = '🥈';
-                message = 'VICE-CAMPEÃO!';
+                message = t('viceMessage');
             } else if (rank === 3) {
                 badge = '🥉';
-                message = '3º LUGAR MUNDIAL!';
+                message = t('thirdMessage');
             } else if (rank <= 10) {
                 badge = '⭐';
-                message = 'TOP 10 MUNDIAL!';
+                message = t('top10Message');
             } else if (rank <= 100) {
                 badge = '🌟';
-                message = 'TOP 100!';
+                message = t('top100Message');
             }
 
             document.getElementById('rankBadge').textContent = badge;
             document.getElementById('rankMessage').textContent = message;
 
-            document.getElementById('leaderboardLevel').textContent = `Nível ${currentLevel}`;
+            const leaderboardTitle = document.getElementById('leaderboardTitle');
+            leaderboardTitle.innerHTML = `${t('leaderboardTitle')} <span id="leaderboardLevel">${currentLevel}</span>`;
+
             displayLeaderboard();
 
             // Update button
             const nextBtn = document.getElementById('nextLevelBtn');
             if (currentLevel < 3) {
-                nextBtn.textContent = '🎯 Próximo Nível';
+                nextBtn.textContent = t('nextLevel');
                 nextBtn.onclick = nextLevelOrRestart;
             } else {
-                nextBtn.textContent = '🔄 Escolher Nível';
+                nextBtn.textContent = t('chooseLevel');
                 nextBtn.onclick = () => {
                     document.getElementById('resultsScreen').classList.remove('active');
                     document.getElementById('levelSelect').classList.add('active');
@@ -1826,7 +2521,7 @@
                     <div class="leaderboard-item ${isCurrentPlayer ? 'you' : ''}">
                         <div class="player-rank">#${index + 1}</div>
                         <div class="player-name">
-                            ${player.name} ${isCurrentPlayer ? '(VOCÊ!)' : ''}
+                            ${player.name} ${isCurrentPlayer ? t('you') : ''}
                             <br>
                             <small style="opacity: 0.8;">🔥${player.streak} | ⏱️${player.time}s</small>
                         </div>
@@ -1837,20 +2532,36 @@
 
             if (levelPlayers.length > 50) {
                 document.getElementById('morePlayersText').textContent =
-                    `... e mais ${levelPlayers.length - 50} jogadores`;
+                    `${t('andMore')} ${levelPlayers.length - 50} ${t('morePlayers')}`;
             }
         }
 
         function shareResults() {
             const rank = document.getElementById('worldRank').textContent;
             const total = document.getElementById('totalPlayersResult').textContent;
-            const levelNames = {1: 'Fundação', 2: 'Competência', 3: 'Maestria'};
-            const text = `🎓 Completei Nível ${currentLevel} (${levelNames[currentLevel]}) - AI Literacy!
+            const levelNames = {
+                pt: {1: 'Fundação', 2: 'Competência', 3: 'Maestria'},
+                en: {1: 'Foundation', 2: 'Competency', 3: 'Mastery'}
+            };
+
+            const levelName = levelNames[currentLang][currentLevel];
+            const finalTimeText = document.getElementById('finalTime').textContent;
+
+            const text = currentLang === 'pt'
+                ? `🎓 Completei Nível ${currentLevel} (${levelName}) - AI Literacy!
 
 🏆 Pontuação: ${score}
 🌍 Rank: #${rank} de ${total}
 🔥 Sequência: ${maxStreak}
-⏱️ Tempo: ${document.getElementById('finalTime').textContent}
+⏱️ Tempo: ${finalTimeText}
+
+#AILiteracy #DrDeSouzAI`
+                : `🎓 Completed Level ${currentLevel} (${levelName}) - AI Literacy!
+
+🏆 Score: ${score}
+🌍 Rank: #${rank} of ${total}
+🔥 Streak: ${maxStreak}
+⏱️ Time: ${finalTimeText}
 
 #AILiteracy #DrDeSouzAI`;
 
@@ -1858,7 +2569,7 @@
                 navigator.share({ title: 'AI Literacy Challenge', text: text });
             } else {
                 navigator.clipboard.writeText(text);
-                alert('📋 Resultado copiado!');
+                alert(currentLang === 'pt' ? '📋 Resultado copiado!' : '📋 Result copied!');
             }
         }
 
