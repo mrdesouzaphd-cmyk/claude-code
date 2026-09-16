@@ -1334,6 +1334,17 @@
         let levelsCompleted = {1: false, 2: false, 3: false};
 
         async function init() {
+            // Initialize database capability
+            try {
+                window.db = await claude.use('db');
+                if (!window.db) {
+                    console.log('Database not available - leaderboard will be limited');
+                }
+            } catch (error) {
+                console.log('Database initialization error:', error);
+                window.db = null;
+            }
+
             await loadLeaderboard();
             updatePlayerCount();
             loadProgress();
@@ -1373,22 +1384,26 @@
 
         async function loadLeaderboard() {
             try {
-                const keys = await window.storage.list('player:level', true);
+                if (!window.db) {
+                    window.allPlayers = [];
+                    return;
+                }
+
                 const players = [];
 
-                if (keys && keys.keys) {
-                    for (const key of keys.keys) {
-                        const data = await window.storage.get(key, true);
-                        if (data && data.value) {
-                            players.push(JSON.parse(data.value));
-                        }
-                    }
+                // Load all three levels
+                for (let level = 1; level <= 3; level++) {
+                    const snapshot = await window.db.collection(`players/level${level}/scores`).get();
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        players.push({...data, id: doc.id});
+                    });
                 }
 
                 players.sort((a, b) => b.score - a.score);
                 window.allPlayers = players;
             } catch (error) {
-                console.log('Leaderboard loading...');
+                console.log('Leaderboard loading...', error);
                 window.allPlayers = [];
             }
         }
@@ -1598,8 +1613,13 @@
             };
 
             try {
-                await window.storage.set(`player:level${currentLevel}:${Date.now()}-${playerName}`, JSON.stringify(playerData), true);
-                await loadLeaderboard();
+                if (window.db) {
+                    const docId = `${Date.now()}-${playerName.replace(/[^a-zA-Z0-9]/g, '_')}`;
+                    await window.db.doc(`players/level${currentLevel}/scores/${docId}`).set(playerData);
+                    await loadLeaderboard();
+                } else {
+                    console.log('Database not available - score not saved globally');
+                }
             } catch (error) {
                 console.error('Leaderboard save error:', error);
             }
