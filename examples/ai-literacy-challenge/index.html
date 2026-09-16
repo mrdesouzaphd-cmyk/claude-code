@@ -2300,14 +2300,14 @@
             document.getElementById('feedbackBox').classList.remove('active');
             document.getElementById('nextBtn').classList.remove('active');
 
-            // Load animation video
+            // Load animation video with language parameter
             const videoFileMap = {
                 1: ['level1-01-science-artificial.html', 'level1-02-oracle-vs-artist.html', 'level1-03-llms.html', 'level1-04-neural-networks.html', 'level1-05-algorithms.html'],
                 2: ['level2-01-prompt-science.html', 'level2-02-hallucination.html', 'level2-03-tokens.html', 'level2-04-context-window.html', 'level2-05-rag.html'],
                 3: ['level3-01-chain-of-thought.html', 'level3-02-temperature.html', 'level3-03-epistemic-agency.html', 'level3-04-2-sigma-problem.html', 'level3-05-sandwich-method.html']
             };
             const videoFile = videoFileMap[currentLevel][currentQuestion];
-            document.getElementById('videoFrame').src = `videos/${videoFile}`;
+            document.getElementById('videoFrame').src = `videos/${videoFile}?lang=${currentLang}`;
             document.getElementById('videoSection').style.display = 'block';
 
             const optionsContainer = document.getElementById('optionsContainer');
