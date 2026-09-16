@@ -90,6 +90,32 @@
             font-weight: bold;
         }
 
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFD700, #FF00FF);
+            border: 3px solid #00D9FF;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 16px;
+            z-index: 10000;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .lang-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .lang-toggle:active {
+            transform: scale(0.95);
+        }
+
         /* Level Selection Screen */
         .level-select {
             display: none;
@@ -924,6 +950,7 @@
     </style>
 </head>
 <body>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langToggle">🇺🇸 English</button>
     <canvas id="confettiCanvas"></canvas>
 
     <div class="container">
@@ -1114,7 +1141,117 @@
     </div>
 
     <script>
-        // LEVEL-BASED QUESTIONS with Academic Vocabulary
+        // LANGUAGE SYSTEM
+        let currentLang = localStorage.getItem('aiLiteracyLang') || 'pt';
+
+        const translations = {
+            en: {
+                subtitle: "🎓 AI Literacy Challenge",
+                welcomeTitle: "🌍 AI Literacy Challenge",
+                welcomeDesc: "Learn AI in 3 progressive levels! 🚀",
+                playersWorldwide: "players worldwide",
+                level1: "Level 1: Foundation",
+                level2: "Level 2: Competency",
+                level3: "Level 3: Mastery",
+                level1Desc: "Understand the basics: What is AI? GenAI vs Predictive AI, Neural Networks, and fundamental concepts.",
+                level2Desc: "Learn to interact: Prompt Science, Hallucination, Tokens, RAG, and Context Window.",
+                level3Desc: "Master the science: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem.",
+                namePlaceholder: "✨ Enter your name",
+                startButton: "🚀 Start!",
+                backButton: "← Back",
+                nextButton: "Next →",
+                skipVideo: "⏭️ Skip video",
+                shareButton: "📤 Share",
+                nextLevel: "🎯 Next Level",
+                chooseLevel: "🔄 Choose Level",
+                resultsTitle: "🎉 Level Complete!",
+                worldRank: "of",
+                players: "players",
+                questions: "Questions",
+                duration: "Duration",
+                points: "Points",
+                questionOf: "Question",
+                of: "of",
+                watchConcept: "📹 Watch concept (8s)",
+                leaderboardTitle: "🏆 Top 50 Worldwide - Level",
+                championMessage: "WORLD CHAMPION!",
+                viceMessage: "RUNNER-UP!",
+                thirdMessage: "3RD PLACE WORLDWIDE!",
+                top10Message: "TOP 10 WORLDWIDE!",
+                top100Message: "TOP 100!",
+                keepImproving: "Keep improving!",
+                score: "Score",
+                maxCombo: "Max Combo",
+                totalTime: "Total Time",
+                correct: "Correct",
+                streak: "Streak",
+                time: "Time"
+            },
+            pt: {
+                subtitle: "🎓 Desafio AI Literacy",
+                welcomeTitle: "🌍 Desafio AI Literacy",
+                welcomeDesc: "Aprenda IA em 3 níveis progressivos! 🚀",
+                playersWorldwide: "jogadores mundialmente",
+                level1: "Nível 1: Fundação",
+                level2: "Nível 2: Competência",
+                level3: "Nível 3: Maestria",
+                level1Desc: "Entenda o básico: O que é IA? GenAI vs Predictive AI. Neural Networks e conceitos fundamentais.",
+                level2Desc: "Aprenda a interagir: Prompt Science, Hallucination, Tokens, RAG e Context Window.",
+                level3Desc: "Domine a ciência: Chain of Thought, Temperature, Epistemic Agency, 2 Sigma Problem.",
+                namePlaceholder: "✨ Digite seu nome",
+                startButton: "🚀 Começar!",
+                backButton: "← Voltar",
+                nextButton: "Próxima →",
+                skipVideo: "⏭️ Pular vídeo",
+                shareButton: "📤 Compartilhar",
+                nextLevel: "🎯 Próximo Nível",
+                chooseLevel: "🔄 Escolher Nível",
+                resultsTitle: "🎉 Nível Completo!",
+                worldRank: "de",
+                players: "jogadores",
+                questions: "Questões",
+                duration: "Duração",
+                points: "Pontos",
+                questionOf: "Pergunta",
+                of: "de",
+                watchConcept: "📹 Assista ao conceito (8s)",
+                leaderboardTitle: "🏆 Top 50 Mundial - Nível",
+                championMessage: "CAMPEÃO MUNDIAL!",
+                viceMessage: "VICE-CAMPEÃO!",
+                thirdMessage: "3º LUGAR MUNDIAL!",
+                top10Message: "TOP 10 MUNDIAL!",
+                top100Message: "TOP 100!",
+                keepImproving: "Continue melhorando!",
+                score: "Pontuação",
+                maxCombo: "Maior Combo",
+                totalTime: "Tempo Total",
+                correct: "Acertos",
+                streak: "Sequência",
+                time: "Tempo"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'pt' ? 'en' : 'pt';
+            localStorage.setItem('aiLiteracyLang', currentLang);
+            document.getElementById('langToggle').textContent = currentLang === 'pt' ? '🇺🇸 English' : '🇧🇷 Português';
+            updateUILanguage();
+        }
+
+        function t(key) {
+            return translations[currentLang][key] || key;
+        }
+
+        function updateUILanguage() {
+            // Update static text elements
+            const subtitle = document.querySelector('.subtitle');
+            if (subtitle) subtitle.textContent = t('subtitle');
+
+            // Update other visible elements based on current screen
+            // This will be called when switching screens too
+        }
+
+        // LEVEL-BASED QUESTIONS with Academic Vocabulary (Bilingual)
         const levels = {
             1: [ // 🟢 FOUNDATION (Literacy)
                 {
