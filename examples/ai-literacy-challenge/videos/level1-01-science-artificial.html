@@ -145,6 +145,29 @@
         <p class="key-message">AI = Engineering Intelligent Systems</p>
     </div>
     <script>
+        // Narration texts
+        const narration = {
+            en: "AI is the Science of the Artificial - an engineering discipline that designs intelligent systems.",
+            pt: "IA é a Ciência do Artificial - uma disciplina de engenharia que projeta sistemas inteligentes."
+        };
+
+        // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'pt';
+
+        // Text-to-speech narration
+        function speak() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(narration[lang]);
+                utterance.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+                utterance.rate = 0.95;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Start narration after 500ms delay
+        setTimeout(speak, 500);
+
         // Create particles
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {

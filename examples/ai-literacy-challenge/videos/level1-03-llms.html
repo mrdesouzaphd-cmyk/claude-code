@@ -175,6 +175,29 @@
         <p class="key-message">Probability of language sequences</p>
     </div>
     <script>
+        // Narration texts
+        const narration = {
+            en: "Large Language Models predict the probability of word sequences, not absolute truth.",
+            pt: "Modelos de Linguagem modelam probabilidades de sequências de palavras, não verdade absoluta."
+        };
+
+        // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'pt';
+
+        // Text-to-speech narration
+        function speak() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(narration[lang]);
+                utterance.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+                utterance.rate = 0.95;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Start narration after 500ms delay
+        setTimeout(speak, 500);
+
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');
