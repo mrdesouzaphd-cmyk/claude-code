@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Test - AI Literacy Challenge</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #000428 100%);
+            color: white;
+            padding: 40px;
+        }
+        h1 { color: #00D9FF; margin-bottom: 30px; }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: linear-gradient(90deg, #00D9FF, #FF00FF);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        button:hover { opacity: 0.8; }
+        .status { margin-top: 10px; color: #FFD700; }
+    </style>
+</head>
+<body>
+    <h1>AI Literacy Challenge - Audio Test</h1>
+    
+    <div class="test-section">
+        <h2>Level 1-01: Science of the Artificial</h2>
+        <button onclick="playAudio('level1-01', 'en')">Play English</button>
+        <button onclick="playAudio('level1-01', 'pt')">Play Portuguese</button>
+        <div id="status-1-01" class="status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Level 2-03: Tokens</h2>
+        <button onclick="playAudio('level2-03', 'en')">Play English</button>
+        <button onclick="playAudio('level2-03', 'pt')">Play Portuguese</button>
+        <div id="status-2-03" class="status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Level 3-05: Sandwich Method</h2>
+        <button onclick="playAudio('level3-05', 'en')">Play English</button>
+        <button onclick="playAudio('level3-05', 'pt')">Play Portuguese</button>
+        <div id="status-3-05" class="status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Summary</h2>
+        <p>✅ Total audio files: 30 (15 concepts × 2 languages)</p>
+        <p>✅ Generated with Kokoro TTS (local, offline)</p>
+        <p>✅ Natural-sounding voices for both languages</p>
+        <p>✅ All HTML videos updated to use audio elements</p>
+        <p>✅ Web Speech API replaced for consistent playback</p>
+    </div>
+
+    <script>
+        let currentAudio = null;
+
+        function playAudio(level, lang) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+
+            const audioPath = `audio/${level}-${lang}.mp3`;
+            const statusId = `status-${level.replace('level', '')}`;
+            const statusEl = document.getElementById(statusId);
+            
+            statusEl.textContent = `Loading ${audioPath}...`;
+            
+            currentAudio = new Audio(audioPath);
+            
+            currentAudio.addEventListener('loadeddata', () => {
+                statusEl.textContent = `Playing ${lang.toUpperCase()}... (${currentAudio.duration.toFixed(1)}s)`;
+            });
+            
+            currentAudio.addEventListener('ended', () => {
+                statusEl.textContent = `Finished playing ${lang.toUpperCase()}`;
+                currentAudio = null;
+            });
+            
+            currentAudio.addEventListener('error', (e) => {
+                statusEl.textContent = `❌ Error loading ${audioPath}`;
+                console.error('Audio error:', e);
+            });
+            
+            currentAudio.play().catch(err => {
+                statusEl.textContent = `❌ Playback failed: ${err.message}`;
+                console.error('Playback error:', err);
+            });
+        }
+    </script>
+</body>
+</html>

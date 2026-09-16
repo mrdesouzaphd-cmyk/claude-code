@@ -184,28 +184,17 @@
         <p class="key-message">Human responsibility to verify truth</p>
     </div>
     <script>
-        // Narration texts
-        const narration = {
-            en: "Epistemic Agency means humans must verify truth - never delegate final judgment to AI.",
-            pt: "Agência Epistêmica significa que humanos devem verificar a verdade - nunca delegar julgamento final à IA."
-        };
-
         // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
         const urlParams = new URLSearchParams(window.location.search);
         const lang = urlParams.get('lang') || 'pt';
 
-        // Text-to-speech narration
-        function speak() {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(narration[lang]);
-                utterance.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
-                utterance.rate = 0.95;
-                speechSynthesis.speak(utterance);
-            }
-        }
-
+        // Audio narration
+        const audio = new Audio(`audio/level3-03-${lang}.mp3`);
+        
         // Start narration after 500ms delay
-        setTimeout(speak, 500);
+        setTimeout(() => {
+            audio.play().catch(err => console.log('Audio playback failed:', err));
+        }, 500);
 
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
