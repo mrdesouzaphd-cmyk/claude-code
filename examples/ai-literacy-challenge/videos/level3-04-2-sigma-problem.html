@@ -162,21 +162,62 @@
             50% { opacity: 1; }
             100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx)); }
         }
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .controls button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .controls button:nth-child(1) {
+            background: linear-gradient(135deg, #00D9FF, #0090BB);
+            border-color: #00D9FF;
+            color: white;
+        }
+        .controls button:nth-child(2) {
+            background: linear-gradient(135deg, #FF00FF, #BB00BB);
+            border-color: #FF00FF;
+            color: white;
+        }
+        .controls button:nth-child(3) {
+            background: linear-gradient(135deg, #FFD700, #BBA000);
+            border-color: #FFD700;
+            color: #1a0033;
+        }
+        .controls button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px currentColor;
+        }
+        .controls button:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="particles" id="particles"></div>
-        <h1 class="title">2 SIGMA PROBLEM</h1>
-        <p class="subtitle">Problema 2 Sigma</p>
+        <h1 class="title" id="title"></h1>
+        <p class="subtitle" id="subtitle"></p>
         <div class="comparison">
             <div class="method classroom">
                 <div class="method-icon">🏫</div>
-                <div class="method-label">Classroom<br>(30 students)</div>
+                <div class="method-label"><span id="label1"></span><br><span id="label1b"></span></div>
             </div>
             <div class="method tutoring">
                 <div class="method-icon">👨‍🏫</div>
-                <div class="method-label">1-on-1<br>Tutoring</div>
+                <div class="method-label"><span id="label2"></span><br><span id="label2b"></span></div>
             </div>
         </div>
         <div class="bars">
@@ -184,20 +225,41 @@
             <div class="bar large" style="--h: 180px;"></div>
         </div>
         <div class="sigma">+2σ</div>
-        <p class="key-message">1-on-1 tutoring is vastly superior</p>
+        <p class="key-message" id="keyMessage"></p>
     </div>
-    <script>
-        // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
+        <script>
         const urlParams = new URLSearchParams(window.location.search);
         const lang = urlParams.get('lang') || 'pt';
 
-        // Audio narration
-        const audio = new Audio(`audio/level3-04-${lang}.mp3`);
-        
-        // Start narration after 500ms delay
-        setTimeout(() => {
+        const content = {
+            en: {title: '2 SIGMA PROBLEM', subtitle: 'Personalized Learning', keyMessage: '1:1 tutoring achieves 2σ improvement'},
+            pt: {title: 'PROBLEMA 2 SIGMA', subtitle: 'Aprendizado Personalizado', keyMessage: 'Tutoria 1:1 alcanca melhora de 2σ'}
+        };
+
+        document.getElementById('title').textContent = content[lang].title;
+        document.getElementById('subtitle').textContent = content[lang].subtitle;
+        document.getElementById('keyMessage').textContent = content[lang].keyMessage;
+
+        const audio = new Audio(`audio/level3-04-2-sigma-problem-${lang}.mp3`);
+        let isPaused = false;
+        let animationStartTime = null;
+
+        function playVideo() {
+            isPaused = false;
             audio.play().catch(err => console.log('Audio playback failed:', err));
-        }, 500);
+            if (!animationStartTime) animationStartTime = Date.now();
+        }
+
+        function pauseVideo() {
+            isPaused = true;
+            audio.pause();
+        }
+
+        function restartVideo() {
+            location.reload();
+        }
+
+        setTimeout(() => playVideo(), 500);
 
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
@@ -209,10 +271,11 @@
             particle.style.animationDelay = (Math.random() * 0.5) + 's';
             particlesContainer.appendChild(particle);
         }
-
-        setTimeout(() => {
-            location.reload();
-        }, 8000);
     </script>
+    <div class="controls">
+        <button onclick="playVideo()">▶️ Play</button>
+        <button onclick="pauseVideo()">⏸️ Pause</button>
+        <button onclick="restartVideo()">🔄 Restart</button>
+    </div>
 </body>
 </html>

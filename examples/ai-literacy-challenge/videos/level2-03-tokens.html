@@ -141,34 +141,196 @@
             50% { opacity: 1; }
             100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx)); }
         }
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .controls button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .controls button:nth-child(1) {
+            background: linear-gradient(135deg, #00D9FF, #0090BB);
+            border-color: #00D9FF;
+            color: white;
+        }
+        .controls button:nth-child(2) {
+            background: linear-gradient(135deg, #FF00FF, #BB00BB);
+            border-color: #FF00FF;
+            color: white;
+        }
+        .controls button:nth-child(3) {
+            background: linear-gradient(135deg, #FFD700, #BBA000);
+            border-color: #FFD700;
+            color: #1a0033;
+        }
+        .controls button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px currentColor;
+        }
+        .controls button:active {
+            transform: scale(0.95);
+        }
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .controls button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .controls button:nth-child(1) {
+            background: linear-gradient(135deg, #00D9FF, #0090BB);
+            border-color: #00D9FF;
+            color: white;
+        }
+        .controls button:nth-child(2) {
+            background: linear-gradient(135deg, #FF00FF, #BB00BB);
+            border-color: #FF00FF;
+            color: white;
+        }
+        .controls button:nth-child(3) {
+            background: linear-gradient(135deg, #FFD700, #BBA000);
+            border-color: #FFD700;
+            color: #1a0033;
+        }
+        .controls button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px currentColor;
+        }
+        .controls button:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="particles" id="particles"></div>
-        <h1 class="title">TOKENS</h1>
-        <p class="subtitle">Tokens</p>
-        <div class="sentence">"AI is amazing!"</div>
-        <div class="token-blocks">
-            <div class="token-block">AI</div>
-            <div class="token-block">is</div>
-            <div class="token-block">amaz</div>
-            <div class="token-block">ing!</div>
+        <h1 class="title" id="title"></h1>
+        <p class="subtitle" id="subtitle"></p>
+        <div class="sentence" id="sentence"></div>
+        <div class="token-blocks" id="tokenBlocks">
+            <div class="token-block" id="token1"></div>
+            <div class="token-block" id="token2"></div>
+            <div class="token-block" id="token3"></div>
+            <div class="token-block" id="token4"></div>
         </div>
-        <div class="formula">1 token ≈ 0.75 words</div>
-        <p class="key-message">Fundamental unit of language</p>
+        <div class="formula" id="formula"></div>
+        <p class="key-message" id="keyMessage"></p>
+    </div>
+    <div class="controls">
+        <button onclick="playVideo()">▶️ Play</button>
+        <button onclick="pauseVideo()">⏸️ Pause</button>
+        <button onclick="restartVideo()">🔄 Restart</button>
     </div>
     <script>
         // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
         const urlParams = new URLSearchParams(window.location.search);
         const lang = urlParams.get('lang') || 'pt';
 
+        // Language-specific content (NO accents in Portuguese)
+        const content = {
+            en: {
+                title: 'TOKENS',
+                subtitle: 'Language Building Blocks',
+                sentence: '"AI is amazing!"',
+                token1: 'AI',
+                token2: 'is',
+                token3: 'amaz',
+                token4: 'ing!',
+                formula: '1 token ≈ 0.75 words',
+                keyMessage: 'Fundamental unit of language'
+            },
+            pt: {
+                title: 'TOKENS',
+                subtitle: 'Blocos de Linguagem',
+                sentence: '"IA e incrivel!"',
+                token1: 'IA',
+                token2: 'e',
+                token3: 'incri',
+                token4: 'vel!',
+                formula: '1 token ≈ 0.75 palavras',
+                keyMessage: 'Unidade fundamental da linguagem'
+            }
+        };
+
+        // Set content based on language
+        document.getElementById('title').textContent = content[lang].title;
+        document.getElementById('subtitle').textContent = content[lang].subtitle;
+        document.getElementById('sentence').textContent = content[lang].sentence;
+        document.getElementById('token1').textContent = content[lang].token1;
+        document.getElementById('token2').textContent = content[lang].token2;
+        document.getElementById('token3').textContent = content[lang].token3;
+        document.getElementById('token4').textContent = content[lang].token4;
+        document.getElementById('formula').textContent = content[lang].formula;
+        document.getElementById('keyMessage').textContent = content[lang].keyMessage;
+
+
+        // Language-specific content (NO accents in Portuguese)
+        const content = {
+            en: {'title': 'TOKENS', 'subtitle': 'Language Building Blocks', 'sentence': '"AI is amazing!"', 'token1': 'AI', 'token2': 'is', 'token3': 'amaz', 'token4': 'ing!', 'formula': '1 token ≈ 0.75 words', 'keyMessage': 'Fundamental unit of language'},
+            pt: {'title': 'TOKENS', 'subtitle': 'Blocos de Construcao da Linguagem', 'sentence': '"IA e incrivel!"', 'token1': 'IA', 'token2': 'e', 'token3': 'incri', 'token4': 'vel!', 'formula': '1 token ≈ 0.75 palavras', 'keyMessage': 'Unidade fundamental da linguagem'}
+        };
+
+        // Set content based on language
+        if (document.getElementById('title')) document.getElementById('title').textContent = content[lang].title;
+        if (document.getElementById('subtitle')) document.getElementById('subtitle').textContent = content[lang].subtitle;
+        if (document.getElementById('sentence')) document.getElementById('sentence').textContent = content[lang].sentence;
+        if (document.getElementById('token1')) document.getElementById('token1').textContent = content[lang].token1;
+        if (document.getElementById('token2')) document.getElementById('token2').textContent = content[lang].token2;
+        if (document.getElementById('token3')) document.getElementById('token3').textContent = content[lang].token3;
+        if (document.getElementById('token4')) document.getElementById('token4').textContent = content[lang].token4;
+        if (document.getElementById('formula')) document.getElementById('formula').textContent = content[lang].formula;
+        if (document.getElementById('keyMessage')) document.getElementById('keyMessage').textContent = content[lang].keyMessage;
+
         // Audio narration
         const audio = new Audio(`audio/level2-03-${lang}.mp3`);
-        
+        let isPaused = false;
+        let animationStartTime = null;
+
+        // Control functions
+        function playVideo() {
+            isPaused = false;
+            audio.play().catch(err => console.log('Audio playback failed:', err));
+            if (!animationStartTime) {
+                animationStartTime = Date.now();
+            }
+        }
+
+        function pauseVideo() {
+            isPaused = true;
+            audio.pause();
+        }
+
+        function restartVideo() {
+            location.reload();
+        }
+
         // Start narration after 500ms delay
         setTimeout(() => {
-            audio.play().catch(err => console.log('Audio playback failed:', err));
+            playVideo();
         }, 500);
 
         const particlesContainer = document.getElementById('particles');
@@ -181,10 +343,6 @@
             particle.style.animationDelay = (Math.random() * 0.5) + 's';
             particlesContainer.appendChild(particle);
         }
-
-        setTimeout(() => {
-            location.reload();
-        }, 8000);
     </script>
 </body>
 </html>

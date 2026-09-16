@@ -155,36 +155,130 @@
             50% { opacity: 1; }
             100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx)); }
         }
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .controls button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .controls button:nth-child(1) {
+            background: linear-gradient(135deg, #00D9FF, #0090BB);
+            border-color: #00D9FF;
+            color: white;
+        }
+        .controls button:nth-child(2) {
+            background: linear-gradient(135deg, #FF00FF, #BB00BB);
+            border-color: #FF00FF;
+            color: white;
+        }
+        .controls button:nth-child(3) {
+            background: linear-gradient(135deg, #FFD700, #BBA000);
+            border-color: #FFD700;
+            color: #1a0033;
+        }
+        .controls button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px currentColor;
+        }
+        .controls button:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="particles" id="particles"></div>
-        <h1 class="title">LARGE LANGUAGE MODELS</h1>
-        <p class="subtitle">Modelos de Linguagem de Grande Escala</p>
+        <h1 class="title" id="title"></h1>
+        <p class="subtitle" id="subtitle"></p>
         <div class="word-flow">
-            <div class="word">The</div>
+            <div class="word" id="word1"></div>
             <div class="arrow">→</div>
-            <div class="word">next</div>
+            <div class="word" id="word2"></div>
             <div class="arrow">→</div>
-            <div class="word">word</div>
+            <div class="word" id="word3"></div>
         </div>
         <div class="probability-bar">
             <div class="probability-fill"></div>
         </div>
-        <p class="key-message">Probability of language sequences</p>
+        <p class="key-message" id="keyMessage"></p>
+    </div>
+    <div class="controls">
+        <button onclick="playVideo()">▶️ Play</button>
+        <button onclick="pauseVideo()">⏸️ Pause</button>
+        <button onclick="restartVideo()">🔄 Restart</button>
     </div>
     <script>
         // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
         const urlParams = new URLSearchParams(window.location.search);
         const lang = urlParams.get('lang') || 'pt';
 
+        // Language-specific content (NO accents in Portuguese)
+        const content = {
+            en: {
+                title: 'LARGE LANGUAGE MODELS',
+                subtitle: 'Language Understanding Systems',
+                word1: 'The',
+                word2: 'next',
+                word3: 'word',
+                keyMessage: 'Probability of language sequences'
+            },
+            pt: {
+                title: 'MODELOS DE LINGUAGEM',
+                subtitle: 'Sistemas de Compreensao Linguistica',
+                word1: 'A',
+                word2: 'proxima',
+                word3: 'palavra',
+                keyMessage: 'Probabilidade de sequencias linguisticas'
+            }
+        };
+
+        // Set content based on language
+        document.getElementById('title').textContent = content[lang].title;
+        document.getElementById('subtitle').textContent = content[lang].subtitle;
+        document.getElementById('word1').textContent = content[lang].word1;
+        document.getElementById('word2').textContent = content[lang].word2;
+        document.getElementById('word3').textContent = content[lang].word3;
+        document.getElementById('keyMessage').textContent = content[lang].keyMessage;
+
         // Audio narration
         const audio = new Audio(`audio/level1-03-${lang}.mp3`);
-        
+        let isPaused = false;
+        let animationStartTime = null;
+
+        // Control functions
+        function playVideo() {
+            isPaused = false;
+            audio.play().catch(err => console.log('Audio playback failed:', err));
+            if (!animationStartTime) {
+                animationStartTime = Date.now();
+            }
+        }
+
+        function pauseVideo() {
+            isPaused = true;
+            audio.pause();
+        }
+
+        function restartVideo() {
+            location.reload();
+        }
+
         // Start narration after 500ms delay
         setTimeout(() => {
-            audio.play().catch(err => console.log('Audio playback failed:', err));
+            playVideo();
         }, 500);
 
         const particlesContainer = document.getElementById('particles');
@@ -197,10 +291,6 @@
             particle.style.animationDelay = (Math.random() * 0.5) + 's';
             particlesContainer.appendChild(particle);
         }
-
-        setTimeout(() => {
-            location.reload();
-        }, 8000);
     </script>
 </body>
 </html>
