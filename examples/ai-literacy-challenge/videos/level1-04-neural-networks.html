@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Networks</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #000428 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .title {
+            position: absolute;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00D9FF, #FF00FF, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: titleFlyIn 1s ease-out 0s forwards;
+        }
+        .subtitle {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-align: center;
+            opacity: 0;
+            top: 60%;
+            animation: subtitleFade 1s ease-out 2s forwards;
+        }
+        .network {
+            position: absolute;
+            width: 500px;
+            height: 250px;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            animation: networkFade 1s ease-out 3s forwards;
+        }
+        .layer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        .neuron {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid;
+            background: rgba(0, 0, 0, 0.5);
+            position: relative;
+            opacity: 0;
+            animation: neuronPulse 0.5s ease-out forwards;
+        }
+        .layer-1 .neuron { border-color: #00D9FF; animation-delay: 3.5s; }
+        .layer-2 .neuron { border-color: #FF00FF; }
+        .layer-3 .neuron { border-color: #FFD700; }
+        .layer-2 .neuron:nth-child(1) { animation-delay: 4s; }
+        .layer-2 .neuron:nth-child(2) { animation-delay: 4.2s; }
+        .layer-2 .neuron:nth-child(3) { animation-delay: 4.4s; }
+        .layer-2 .neuron:nth-child(4) { animation-delay: 4.6s; }
+        .layer-3 .neuron { animation-delay: 5s; }
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #00D9FF, #FF00FF);
+            transform-origin: left center;
+            opacity: 0;
+            animation: connectionGlow 1s ease-out 4.5s forwards;
+        }
+        .key-message {
+            position: absolute;
+            font-size: 28px;
+            font-weight: 900;
+            color: #FFD700;
+            text-align: center;
+            top: 75%;
+            opacity: 0;
+            animation: messageFade 1s ease-out 6s forwards;
+        }
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 2s ease-out forwards;
+        }
+        @keyframes titleFlyIn {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtitleFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes networkFade {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes neuronPulse {
+            0% { opacity: 0; transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px currentColor; }
+        }
+        @keyframes connectionGlow {
+            0% { opacity: 0; }
+            100% { opacity: 0.6; }
+        }
+        @keyframes messageFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) translateX(0); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="particles" id="particles"></div>
+        <h1 class="title">NEURAL NETWORKS</h1>
+        <p class="subtitle">Redes Neurais</p>
+        <div class="network">
+            <div class="layer layer-1">
+                <div class="neuron"></div>
+            </div>
+            <div class="layer layer-2">
+                <div class="neuron"></div>
+                <div class="neuron"></div>
+                <div class="neuron"></div>
+                <div class="neuron"></div>
+            </div>
+            <div class="layer layer-3">
+                <div class="neuron"></div>
+            </div>
+        </div>
+        <p class="key-message">Layers recognizing patterns</p>
+    </div>
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = 50 + Math.random() * 20 + '%';
+            particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            particle.style.animationDelay = (Math.random() * 0.5) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        setTimeout(() => {
+            location.reload();
+        }, 8000);
+    </script>
+</body>
+</html>
