@@ -287,24 +287,6 @@
         document.getElementById('formula').textContent = content[lang].formula;
         document.getElementById('keyMessage').textContent = content[lang].keyMessage;
 
-
-        // Language-specific content (NO accents in Portuguese)
-        const content = {
-            en: {'title': 'TOKENS', 'subtitle': 'Language Building Blocks', 'sentence': '"AI is amazing!"', 'token1': 'AI', 'token2': 'is', 'token3': 'amaz', 'token4': 'ing!', 'formula': '1 token ≈ 0.75 words', 'keyMessage': 'Fundamental unit of language'},
-            pt: {'title': 'TOKENS', 'subtitle': 'Blocos de Construcao da Linguagem', 'sentence': '"IA e incrivel!"', 'token1': 'IA', 'token2': 'e', 'token3': 'incri', 'token4': 'vel!', 'formula': '1 token ≈ 0.75 palavras', 'keyMessage': 'Unidade fundamental da linguagem'}
-        };
-
-        // Set content based on language
-        if (document.getElementById('title')) document.getElementById('title').textContent = content[lang].title;
-        if (document.getElementById('subtitle')) document.getElementById('subtitle').textContent = content[lang].subtitle;
-        if (document.getElementById('sentence')) document.getElementById('sentence').textContent = content[lang].sentence;
-        if (document.getElementById('token1')) document.getElementById('token1').textContent = content[lang].token1;
-        if (document.getElementById('token2')) document.getElementById('token2').textContent = content[lang].token2;
-        if (document.getElementById('token3')) document.getElementById('token3').textContent = content[lang].token3;
-        if (document.getElementById('token4')) document.getElementById('token4').textContent = content[lang].token4;
-        if (document.getElementById('formula')) document.getElementById('formula').textContent = content[lang].formula;
-        if (document.getElementById('keyMessage')) document.getElementById('keyMessage').textContent = content[lang].keyMessage;
-
         // Audio narration
         const audio = new Audio(`audio/level2-03-${lang}.mp3`);
         let isPaused = false;
