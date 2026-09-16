@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 Sigma Problem</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #000428 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .title {
+            position: absolute;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00D9FF, #FF00FF, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: titleFlyIn 1s ease-out 0s forwards;
+        }
+        .subtitle {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-align: center;
+            opacity: 0;
+            top: 60%;
+            animation: subtitleFade 1s ease-out 2s forwards;
+        }
+        .comparison {
+            position: absolute;
+            width: 600px;
+            display: flex;
+            justify-content: space-around;
+            opacity: 0;
+            animation: compFade 1s ease-out 3s forwards;
+        }
+        .method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .method-icon {
+            font-size: 70px;
+            opacity: 0;
+            animation: iconBounce 0.5s ease-out forwards;
+        }
+        .classroom .method-icon { animation-delay: 3.5s; }
+        .tutoring .method-icon { animation-delay: 4.5s; }
+        .method-label {
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+        }
+        .classroom .method-label { color: #00D9FF; }
+        .tutoring .method-label { color: #FFD700; }
+        .bars {
+            position: absolute;
+            bottom: 22%;
+            width: 600px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            opacity: 0;
+            animation: barsFade 1s ease-out 5s forwards;
+        }
+        .bar {
+            width: 100px;
+            background: linear-gradient(to top, #00D9FF, #FF00FF);
+            border-radius: 8px 8px 0 0;
+            animation: barGrow 1s ease-out forwards;
+        }
+        .bar.small { height: 0; animation-delay: 5.5s; }
+        .bar.large { height: 0; background: linear-gradient(to top, #FFD700, #FF00FF); animation-delay: 6s; }
+        .sigma {
+            position: absolute;
+            bottom: 15%;
+            font-size: 60px;
+            color: #FFD700;
+            opacity: 0;
+            animation: sigmaAppear 0.5s ease-out 6.5s forwards;
+        }
+        .key-message {
+            position: absolute;
+            font-size: 24px;
+            font-weight: 900;
+            color: #FFD700;
+            text-align: center;
+            top: 75%;
+            opacity: 0;
+            animation: messageFade 1s ease-out 6.5s forwards;
+        }
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 2s ease-out forwards;
+        }
+        @keyframes titleFlyIn {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtitleFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes compFade {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes iconBounce {
+            0% { opacity: 0; transform: translateY(-30px); }
+            50% { transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes barsFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes barGrow {
+            0% { height: 0; }
+            100% { height: var(--h); }
+        }
+        @keyframes sigmaAppear {
+            0% { opacity: 0; transform: scale(0) rotate(-180deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        @keyframes messageFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) translateX(0); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="particles" id="particles"></div>
+        <h1 class="title">2 SIGMA PROBLEM</h1>
+        <p class="subtitle">Problema 2 Sigma</p>
+        <div class="comparison">
+            <div class="method classroom">
+                <div class="method-icon">🏫</div>
+                <div class="method-label">Classroom<br>(30 students)</div>
+            </div>
+            <div class="method tutoring">
+                <div class="method-icon">👨‍🏫</div>
+                <div class="method-label">1-on-1<br>Tutoring</div>
+            </div>
+        </div>
+        <div class="bars">
+            <div class="bar small" style="--h: 80px;"></div>
+            <div class="bar large" style="--h: 180px;"></div>
+        </div>
+        <div class="sigma">+2σ</div>
+        <p class="key-message">1-on-1 tutoring is vastly superior</p>
+    </div>
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = 50 + Math.random() * 20 + '%';
+            particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            particle.style.animationDelay = (Math.random() * 0.5) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        setTimeout(() => {
+            location.reload();
+        }, 8000);
+    </script>
+</body>
+</html>

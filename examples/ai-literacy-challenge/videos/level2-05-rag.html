@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #000428 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .title {
+            position: absolute;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00D9FF, #FF00FF, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: titleFlyIn 1s ease-out 0s forwards;
+        }
+        .subtitle {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-align: center;
+            opacity: 0;
+            top: 60%;
+            animation: subtitleFade 1s ease-out 2s forwards;
+        }
+        .rag-flow {
+            position: absolute;
+            width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            opacity: 0;
+            animation: flowFade 1s ease-out 3s forwards;
+        }
+        .ai-icon {
+            font-size: 80px;
+            opacity: 0;
+            animation: iconAppear 0.5s ease-out 3.5s forwards;
+        }
+        .anchor-chain {
+            font-size: 60px;
+            opacity: 0;
+            animation: chainAppear 0.5s ease-out 4s forwards;
+        }
+        .documents {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            animation: docsAppear 0.5s ease-out 4.5s forwards;
+        }
+        .document {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(255, 215, 0, 0.2);
+            border-left: 4px solid #FFD700;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #FFD700;
+            font-weight: 700;
+        }
+        .glow-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.3), transparent);
+            opacity: 0;
+            animation: glowPulse 2s ease-in-out 5s infinite;
+        }
+        .key-message {
+            position: absolute;
+            font-size: 26px;
+            font-weight: 900;
+            color: #FFD700;
+            text-align: center;
+            top: 75%;
+            opacity: 0;
+            animation: messageFade 1s ease-out 6s forwards;
+        }
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 2s ease-out forwards;
+        }
+        @keyframes titleFlyIn {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtitleFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes flowFade {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes iconAppear {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes chainAppear {
+            0% { opacity: 0; transform: scale(0.5) rotate(-45deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        @keyframes docsAppear {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+        @keyframes messageFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) translateX(0); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="particles" id="particles"></div>
+        <div class="glow-effect"></div>
+        <h1 class="title">RAG</h1>
+        <p class="subtitle">Retrieval Augmented Generation</p>
+        <div class="rag-flow">
+            <div class="ai-icon">🤖</div>
+            <div class="anchor-chain">⛓️</div>
+            <div class="documents">
+                <div class="document">📄 Document 1</div>
+                <div class="document">📄 Document 2</div>
+                <div class="document">📄 Document 3</div>
+            </div>
+        </div>
+        <p class="key-message">Anchoring AI in specific documents</p>
+    </div>
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = 50 + Math.random() * 20 + '%';
+            particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            particle.style.animationDelay = (Math.random() * 0.5) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        setTimeout(() => {
+            location.reload();
+        }, 8000);
+    </script>
+</body>
+</html>
