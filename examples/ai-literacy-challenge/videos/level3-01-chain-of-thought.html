@@ -171,6 +171,29 @@
         <p class="key-message">AI shows reasoning process</p>
     </div>
     <script>
+        // Narration texts
+        const narration = {
+            en: "Chain of Thought makes AI show its reasoning step-by-step before the final answer.",
+            pt: "Cadeia de Pensamento faz a IA mostrar seu raciocínio passo-a-passo antes da resposta final."
+        };
+
+        // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'pt';
+
+        // Text-to-speech narration
+        function speak() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(narration[lang]);
+                utterance.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+                utterance.rate = 0.95;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Start narration after 500ms delay
+        setTimeout(speak, 500);
+
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');

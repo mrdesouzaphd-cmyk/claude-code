@@ -187,6 +187,29 @@
         <p class="key-message">1-on-1 tutoring is vastly superior</p>
     </div>
     <script>
+        // Narration texts
+        const narration = {
+            en: "One-on-one tutoring is two standard deviations better than classroom learning. AI can scale this.",
+            pt: "Tutoria individual é dois desvios-padrão melhor que aprendizado em sala. IA pode escalar isso."
+        };
+
+        // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'pt';
+
+        // Text-to-speech narration
+        function speak() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(narration[lang]);
+                utterance.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+                utterance.rate = 0.95;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Start narration after 500ms delay
+        setTimeout(speak, 500);
+
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');

@@ -188,6 +188,29 @@
         <p class="key-message">Randomness control parameter</p>
     </div>
     <script>
+        // Narration texts
+        const narration = {
+            en: "Temperature controls randomness: low values produce factual outputs, high values enable creativity.",
+            pt: "Temperature controla aleatoriedade: valores baixos produzem respostas factuais, valores altos permitem criatividade."
+        };
+
+        // Detect language from URL parameter (?lang=en or ?lang=pt, default to pt)
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'pt';
+
+        // Text-to-speech narration
+        function speak() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(narration[lang]);
+                utterance.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+                utterance.rate = 0.95;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Start narration after 500ms delay
+        setTimeout(speak, 500);
+
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');
